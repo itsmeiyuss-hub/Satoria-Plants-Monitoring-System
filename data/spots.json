@@ -1,0 +1,114 @@
+[
+  {
+    "id": 1,
+    "x": 80,
+    "y": 80,
+    "plantId": 1,
+    "label": "Taman Depan"
+  },
+  {
+    "id": 2,
+    "x": 196,
+    "y": 46,
+    "plantId": 2,
+    "label": "Area Kantor"
+  },
+  {
+    "id": 3,
+    "x": 680,
+    "y": 90,
+    "plantId": 3,
+    "label": "Kolam"
+  },
+  {
+    "id": 4,
+    "x": 760,
+    "y": 200,
+    "plantId": 4,
+    "label": "Area Samping"
+  },
+  {
+    "id": 5,
+    "x": 140,
+    "y": 200,
+    "plantId": 5,
+    "label": "Pintu Masuk"
+  },
+  {
+    "id": 6,
+    "x": 620,
+    "y": 320,
+    "plantId": 6,
+    "label": "WWTP"
+  },
+  {
+    "id": 7,
+    "x": 400,
+    "y": 390,
+    "plantId": 7,
+    "label": "Gerbang"
+  },
+  {
+    "id": 8,
+    "x": 80,
+    "y": 370,
+    "plantId": 8,
+    "label": "Taman Sisi"
+  },
+  {
+    "id": 9,
+    "x": 300,
+    "y": 180,
+    "plantId": 9,
+    "label": "Lobby"
+  },
+  {
+    "id": 10,
+    "x": 533,
+    "y": 102,
+    "plantId": 10,
+    "label": "Jalan Utama"
+  },
+  {
+    "id": 11,
+    "x": 240,
+    "y": 350,
+    "plantId": 11,
+    "label": "Pagar Timur"
+  },
+  {
+    "id": 12,
+    "x": 730,
+    "y": 400,
+    "plantId": 12,
+    "label": "Taman Indoor"
+  },
+  {
+    "id": 13,
+    "x": 450,
+    "y": 260,
+    "plantId": 13,
+    "label": "Produksi"
+  },
+  {
+    "id": 14,
+    "x": 560,
+    "y": 420,
+    "plantId": 14,
+    "label": "Parkir"
+  },
+  {
+    "id": 15,
+    "x": 465,
+    "y": 67,
+    "plantId": 1,
+    "label": "Titik Baru"
+  },
+  {
+    "id": 16,
+    "x": 404,
+    "y": 90,
+    "plantId": 1,
+    "label": "Titik Baru"
+  }
+]

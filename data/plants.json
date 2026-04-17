@@ -1,0 +1,156 @@
+[
+  {
+    "id": 1,
+    "nama": "Walisongo",
+    "jenis": "Schefflera arboricola",
+    "lokasi": "Area Taman",
+    "jumlah": 10,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#1D9E75"
+  },
+  {
+    "id": 2,
+    "nama": "Daun Pucuk Merah",
+    "jenis": "Syzygium myrtifolium Walp.",
+    "lokasi": "Taman Depan",
+    "jumlah": 15,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#639922"
+  },
+  {
+    "id": 3,
+    "nama": "Lotus",
+    "jenis": "Nelumbo nucifera",
+    "lokasi": "Kolam",
+    "jumlah": 5,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#0F6E56"
+  },
+  {
+    "id": 4,
+    "nama": "Mawar Jambe",
+    "jenis": "Cycas sp",
+    "lokasi": "Area Kantor",
+    "jumlah": 8,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#3B6D11"
+  },
+  {
+    "id": 5,
+    "nama": "Kaki Gajah",
+    "jenis": "genus Adansonia",
+    "lokasi": "Area Luar",
+    "jumlah": 3,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "/uploads/plant_1776390459810.png",
+    "color": "#9FE1CB"
+  },
+  {
+    "id": 6,
+    "nama": "Canna Lily",
+    "jenis": "Canna indica",
+    "lokasi": "Taman Tengah",
+    "jumlah": 20,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#FAC775"
+  },
+  {
+    "id": 7,
+    "nama": "Pohon Asoka",
+    "jenis": "Saraca Indica",
+    "lokasi": "Gerbang Masuk",
+    "jumlah": 6,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#97C459"
+  },
+  {
+    "id": 8,
+    "nama": "Bunga Mondokaki",
+    "jenis": "Tabernaemontana divaricata",
+    "lokasi": "Taman Samping",
+    "jumlah": 12,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#D4537E"
+  },
+  {
+    "id": 9,
+    "nama": "Pohon Naga",
+    "jenis": "Dracaena marginata",
+    "lokasi": "Lobby",
+    "jumlah": 4,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#5B9CF2"
+  },
+  {
+    "id": 10,
+    "nama": "Pohon Hujan",
+    "jenis": "Spathodea campanulata",
+    "lokasi": "Jalan Utama",
+    "jumlah": 7,
+    "kondisi": "Perlu Perawatan",
+    "desc": "",
+    "foto": "",
+    "color": "#F2B851"
+  },
+  {
+    "id": 11,
+    "nama": "Sambang Darah",
+    "jenis": "Excoecaria cochinchinensis",
+    "lokasi": "Pagar Timur",
+    "jumlah": 25,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#E05C5C"
+  },
+  {
+    "id": 12,
+    "nama": "Lili Semak",
+    "jenis": "Clivia miniata",
+    "lokasi": "Taman Indoor",
+    "jumlah": 9,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#B5A4E0"
+  },
+  {
+    "id": 13,
+    "nama": "Tanaman Puring",
+    "jenis": "Codiaeum variegatum",
+    "lokasi": "Area Produksi",
+    "jumlah": 30,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#7FB5A8"
+  },
+  {
+    "id": 14,
+    "nama": "Palem Lontar",
+    "jenis": "Borassus flabellifer",
+    "lokasi": "Area Parkir",
+    "jumlah": 5,
+    "kondisi": "Baik",
+    "desc": "",
+    "foto": "",
+    "color": "#C68A3E"
+  }
+]

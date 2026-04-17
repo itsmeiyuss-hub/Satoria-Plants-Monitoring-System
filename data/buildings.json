@@ -1,0 +1,164 @@
+[
+  {
+    "x": 30,
+    "y": 30,
+    "w": 160,
+    "h": 80,
+    "label": "Kantor Utama",
+    "color": "#B5D4F4",
+    "rotate": 0
+  },
+  {
+    "x": 210,
+    "y": 30,
+    "w": 120,
+    "h": 60,
+    "label": "Gudang FG 1",
+    "color": "#C0DD97",
+    "rotate": 0
+  },
+  {
+    "x": 340,
+    "y": 30,
+    "w": 100,
+    "h": 50,
+    "label": "Lab QC",
+    "color": "#FAC775",
+    "rotate": 0
+  },
+  {
+    "x": 30,
+    "y": 130,
+    "w": 130,
+    "h": 100,
+    "label": "Workshop",
+    "color": "#F5C4B3",
+    "rotate": 0
+  },
+  {
+    "x": 170,
+    "y": 110,
+    "w": 180,
+    "h": 90,
+    "label": "Pharma Plant",
+    "color": "#B5D4F4",
+    "rotate": 0
+  },
+  {
+    "x": 360,
+    "y": 100,
+    "w": 150,
+    "h": 120,
+    "label": "WH Raw Mat",
+    "color": "#C0DD97",
+    "rotate": 0
+  },
+  {
+    "x": 520,
+    "y": 30,
+    "w": 140,
+    "h": 80,
+    "label": "XX",
+    "color": "#d3d1c7",
+    "rotate": 0
+  },
+  {
+    "x": 520,
+    "y": 120,
+    "w": 200,
+    "h": 100,
+    "label": "Biscuit Plant",
+    "color": "#F5C4B3",
+    "rotate": 0
+  },
+  {
+    "x": 670,
+    "y": 30,
+    "w": 120,
+    "h": 80,
+    "label": "Flavour Plant",
+    "color": "#D3D1C7",
+    "rotate": 0
+  },
+  {
+    "x": 30,
+    "y": 250,
+    "w": 200,
+    "h": 110,
+    "label": "Gudang FG 3",
+    "color": "#C0DD97",
+    "rotate": 0
+  },
+  {
+    "x": 240,
+    "y": 220,
+    "w": 160,
+    "h": 130,
+    "label": "WWTP",
+    "color": "#9FE1CB",
+    "rotate": 0
+  },
+  {
+    "x": 410,
+    "y": 240,
+    "w": 250,
+    "h": 120,
+    "label": "Lapangan",
+    "color": "#EAF3DE",
+    "rotate": 0
+  },
+  {
+    "x": 30,
+    "y": 380,
+    "w": 160,
+    "h": 80,
+    "label": "Gerbang & Pos",
+    "color": "#D3D1C7",
+    "rotate": 0
+  },
+  {
+    "x": 200,
+    "y": 370,
+    "w": 100,
+    "h": 80,
+    "label": "Musholla",
+    "color": "#EEEDFE",
+    "rotate": 0
+  },
+  {
+    "x": 660,
+    "y": 240,
+    "w": 170,
+    "h": 120,
+    "label": "Gudang Spare",
+    "color": "#FAC775",
+    "rotate": 0
+  },
+  {
+    "x": 450,
+    "y": 380,
+    "w": 100,
+    "h": 80,
+    "label": "Genset",
+    "color": "#F5C4B3",
+    "rotate": 0
+  },
+  {
+    "x": 560,
+    "y": 370,
+    "w": 120,
+    "h": 90,
+    "label": "Cooling Tower",
+    "color": "#B5D4F4",
+    "rotate": 0
+  },
+  {
+    "x": 700,
+    "y": 370,
+    "w": 140,
+    "h": 80,
+    "label": "Boiler Room",
+    "color": "#F0997B",
+    "rotate": 0
+  }
+]
