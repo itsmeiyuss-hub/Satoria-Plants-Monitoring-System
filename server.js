@@ -2,19 +2,26 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ─── Cloudinary Config ────────────────────────────────────────────────────────
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 // ─── Paths ────────────────────────────────────────────────────────────────────
-const DATA_FILE  = path.join(__dirname, 'data', 'plants.json');
-const SPOTS_FILE = path.join(__dirname, 'data', 'spots.json');
-const PUBLIC_DIR = path.join(__dirname, 'public');
-const UPLOADS_DIR = path.join(__dirname, 'public', 'uploads');
+const DATA_FILE      = path.join(__dirname, 'data', 'plants.json');
+const SPOTS_FILE     = path.join(__dirname, 'data', 'spots.json');
+const BUILDINGS_FILE = path.join(__dirname, 'data', 'buildings.json');
+const PUBLIC_DIR     = path.join(__dirname, 'public');
 
 // ─── Ensure directories & default data files exist ───────────────────────────
 if (!fs.existsSync(path.join(__dirname, 'data'))) fs.mkdirSync(path.join(__dirname, 'data'));
-if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
 const DEFAULT_PLANTS = [
   {id:1,  nama:'Walisongo',        jenis:'Schefflera arboricola',         lokasi:'Area Taman',     jumlah:10, kondisi:'Baik',            desc:'', foto:'', color:'#1D9E75'},
@@ -50,23 +57,38 @@ const DEFAULT_SPOTS = [
   {id:14, x:560, y:420, plantId:14, label:'Parkir'},
 ];
 
-if (!fs.existsSync(DATA_FILE))  fs.writeFileSync(DATA_FILE,  JSON.stringify(DEFAULT_PLANTS, null, 2));
-if (!fs.existsSync(SPOTS_FILE)) fs.writeFileSync(SPOTS_FILE, JSON.stringify(DEFAULT_SPOTS,  null, 2));
+const DEFAULT_BUILDINGS = [
+  {x:30, y:30, w:160,h:80,  label:'Kantor Utama',  color:'#B5D4F4', rotate:0},
+  {x:210,y:30, w:120,h:60,  label:'Gudang FG 1',   color:'#C0DD97', rotate:0},
+  {x:340,y:30, w:100,h:50,  label:'Lab QC',        color:'#FAC775', rotate:0},
+  {x:30, y:130,w:130,h:100, label:'Workshop',      color:'#F5C4B3', rotate:0},
+  {x:170,y:110,w:180,h:90,  label:'Pharma Plant',  color:'#B5D4F4', rotate:0},
+  {x:360,y:100,w:150,h:120, label:'WH Raw Mat',    color:'#C0DD97', rotate:0},
+  {x:520,y:30, w:140,h:80,  label:'Powder Plant',  color:'#FAC775', rotate:0},
+  {x:520,y:120,w:200,h:100, label:'Biscuit Plant', color:'#F5C4B3', rotate:0},
+  {x:670,y:30, w:120,h:80,  label:'Flavour Plant', color:'#D3D1C7', rotate:0},
+  {x:30, y:250,w:200,h:110, label:'Gudang FG 3',   color:'#C0DD97', rotate:0},
+  {x:240,y:220,w:160,h:130, label:'WWTP',          color:'#9FE1CB', rotate:0},
+  {x:410,y:240,w:250,h:120, label:'Lapangan',      color:'#EAF3DE', rotate:0},
+  {x:30, y:380,w:160,h:80,  label:'Gerbang & Pos', color:'#D3D1C7', rotate:0},
+  {x:200,y:370,w:100,h:80,  label:'Musholla',      color:'#EEEDFE', rotate:0},
+  {x:660,y:240,w:170,h:120, label:'Gudang Spare',  color:'#FAC775', rotate:0},
+  {x:450,y:380,w:100,h:80,  label:'Genset',        color:'#F5C4B3', rotate:0},
+  {x:560,y:370,w:120,h:90,  label:'Cooling Tower', color:'#B5D4F4', rotate:0},
+  {x:700,y:370,w:140,h:80,  label:'Boiler Room',   color:'#F0997B', rotate:0},
+];
+
+if (!fs.existsSync(DATA_FILE))      fs.writeFileSync(DATA_FILE,      JSON.stringify(DEFAULT_PLANTS,    null, 2));
+if (!fs.existsSync(SPOTS_FILE))     fs.writeFileSync(SPOTS_FILE,     JSON.stringify(DEFAULT_SPOTS,     null, 2));
+if (!fs.existsSync(BUILDINGS_FILE)) fs.writeFileSync(BUILDINGS_FILE, JSON.stringify(DEFAULT_BUILDINGS, null, 2));
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function readJSON(file) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
 function writeJSON(file, data) { fs.writeFileSync(file, JSON.stringify(data, null, 2)); }
 function nextId(arr) { return arr.length ? Math.max(...arr.map(x => x.id)) + 1 : 1; }
 
-// ─── Multer (foto upload) ─────────────────────────────────────────────────────
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, UPLOADS_DIR),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `plant_${Date.now()}${ext}`);
-  }
-});
-const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+// ─── Multer (simpan sementara di memory, lalu upload ke Cloudinary) ───────────
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));
@@ -100,7 +122,6 @@ app.delete('/api/plants/:id', (req, res) => {
   plants = plants.filter(p => p.id !== id);
   writeJSON(DATA_FILE, plants);
 
-  // Remove spots linked to this plant
   let spots = readJSON(SPOTS_FILE);
   spots = spots.filter(s => s.plantId !== id);
   writeJSON(SPOTS_FILE, spots);
@@ -108,22 +129,31 @@ app.delete('/api/plants/:id', (req, res) => {
   res.json({ ok: true });
 });
 
-// ─── API: Photo upload ────────────────────────────────────────────────────────
-app.post('/api/plants/:id/foto', upload.single('foto'), (req, res) => {
-  const plants = readJSON(DATA_FILE);
-  const idx = plants.findIndex(p => p.id === parseInt(req.params.id));
-  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+// ─── API: Photo upload ke Cloudinary ─────────────────────────────────────────
+app.post('/api/plants/:id/foto', upload.single('foto'), async (req, res) => {
+  try {
+    const plants = readJSON(DATA_FILE);
+    const idx = plants.findIndex(p => p.id === parseInt(req.params.id));
+    if (idx === -1) return res.status(404).json({ error: 'Not found' });
 
-  // Delete old foto file if exists
-  if (plants[idx].foto) {
-    const oldPath = path.join(PUBLIC_DIR, plants[idx].foto);
-    if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+    // Upload ke Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: 'satoria-plants', resource_type: 'image' },
+        (error, result) => { if (error) reject(error); else resolve(result); }
+      );
+      stream.end(req.file.buffer);
+    });
+
+    // Simpan URL Cloudinary ke data tanaman
+    plants[idx].foto = result.secure_url;
+    writeJSON(DATA_FILE, plants);
+    res.json({ foto: result.secure_url });
+
+  } catch (err) {
+    console.error('Upload error:', err);
+    res.status(500).json({ error: 'Gagal upload foto' });
   }
-
-  const fotoUrl = `/uploads/${req.file.filename}`;
-  plants[idx].foto = fotoUrl;
-  writeJSON(DATA_FILE, plants);
-  res.json({ foto: fotoUrl });
 });
 
 // ─── API: Map Spots ───────────────────────────────────────────────────────────
@@ -149,7 +179,6 @@ app.put('/api/spots/:id', (req, res) => {
 });
 
 app.put('/api/spots', (req, res) => {
-  // Bulk update (save all spots at once after drag)
   writeJSON(SPOTS_FILE, req.body);
   res.json({ ok: true });
 });
@@ -162,31 +191,6 @@ app.delete('/api/spots/:id', (req, res) => {
 });
 
 // ─── API: Buildings Layout ────────────────────────────────────────────────────
-const BUILDINGS_FILE = path.join(__dirname, 'data', 'buildings.json');
-
-const DEFAULT_BUILDINGS = [
-  {x:30, y:30, w:160,h:80,  label:'Kantor Utama',  color:'#B5D4F4', rotate:0},
-  {x:210,y:30, w:120,h:60,  label:'Gudang FG 1',   color:'#C0DD97', rotate:0},
-  {x:340,y:30, w:100,h:50,  label:'Lab QC',        color:'#FAC775', rotate:0},
-  {x:30, y:130,w:130,h:100, label:'Workshop',      color:'#F5C4B3', rotate:0},
-  {x:170,y:110,w:180,h:90,  label:'Pharma Plant',  color:'#B5D4F4', rotate:0},
-  {x:360,y:100,w:150,h:120, label:'WH Raw Mat',    color:'#C0DD97', rotate:0},
-  {x:520,y:30, w:140,h:80,  label:'Powder Plant',  color:'#FAC775', rotate:0},
-  {x:520,y:120,w:200,h:100, label:'Biscuit Plant', color:'#F5C4B3', rotate:0},
-  {x:670,y:30, w:120,h:80,  label:'Flavour Plant', color:'#D3D1C7', rotate:0},
-  {x:30, y:250,w:200,h:110, label:'Gudang FG 3',   color:'#C0DD97', rotate:0},
-  {x:240,y:220,w:160,h:130, label:'WWTP',          color:'#9FE1CB', rotate:0},
-  {x:410,y:240,w:250,h:120, label:'Lapangan',      color:'#EAF3DE', rotate:0},
-  {x:30, y:380,w:160,h:80,  label:'Gerbang & Pos', color:'#D3D1C7', rotate:0},
-  {x:200,y:370,w:100,h:80,  label:'Musholla',      color:'#EEEDFE', rotate:0},
-  {x:660,y:240,w:170,h:120, label:'Gudang Spare',  color:'#FAC775', rotate:0},
-  {x:450,y:380,w:100,h:80,  label:'Genset',        color:'#F5C4B3', rotate:0},
-  {x:560,y:370,w:120,h:90,  label:'Cooling Tower', color:'#B5D4F4', rotate:0},
-  {x:700,y:370,w:140,h:80,  label:'Boiler Room',   color:'#F0997B', rotate:0},
-];
-
-if (!fs.existsSync(BUILDINGS_FILE)) fs.writeFileSync(BUILDINGS_FILE, JSON.stringify(DEFAULT_BUILDINGS, null, 2));
-
 app.get('/api/buildings', (req, res) => {
   res.json(readJSON(BUILDINGS_FILE));
 });
