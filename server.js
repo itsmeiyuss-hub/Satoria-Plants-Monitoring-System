@@ -26,7 +26,7 @@ async function initDB() {
     CREATE TABLE IF NOT EXISTS plants (
       id SERIAL PRIMARY KEY,
       nama TEXT, jenis TEXT, lokasi TEXT,
-      jumlah INTEGER, kondisi TEXT, desc TEXT,
+      jumlah INTEGER, kondisi TEXT, "desc" TEXT,
       foto TEXT, color TEXT
     );
     CREATE TABLE IF NOT EXISTS spots (
@@ -60,7 +60,7 @@ async function initDB() {
       ['Palem Lontar','Borassus flabellifer','Area Parkir',5,'Baik','','','#C68A3E'],
     ];
     for (const p of defaultPlants) {
-      await pool.query('INSERT INTO plants (nama,jenis,lokasi,jumlah,kondisi,desc,foto,color) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)', p);
+      await pool.query('INSERT INTO plants (nama,jenis,lokasi,jumlah,kondisi,"desc",foto,color) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)', p);
     }
   }
 
@@ -115,7 +115,7 @@ app.get('/api/plants', async (req, res) => {
 app.post('/api/plants', async (req, res) => {
   const { nama,jenis,lokasi,jumlah,kondisi,desc,foto,color } = req.body;
   const { rows } = await pool.query(
-    'INSERT INTO plants (nama,jenis,lokasi,jumlah,kondisi,desc,foto,color) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',
+    'INSERT INTO plants (nama,jenis,lokasi,jumlah,kondisi,"desc",foto,color) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',
     [nama,jenis,lokasi,jumlah,kondisi,desc||'',foto||'',color||'#1D9E75']
   );
   res.json(rows[0]);
@@ -124,7 +124,7 @@ app.post('/api/plants', async (req, res) => {
 app.put('/api/plants/:id', async (req, res) => {
   const { nama,jenis,lokasi,jumlah,kondisi,desc,foto,color } = req.body;
   const { rows } = await pool.query(
-    'UPDATE plants SET nama=$1,jenis=$2,lokasi=$3,jumlah=$4,kondisi=$5,desc=$6,foto=$7,color=$8 WHERE id=$9 RETURNING *',
+    'UPDATE plants SET nama=$1,jenis=$2,lokasi=$3,jumlah=$4,kondisi=$5,"desc"=$6,foto=$7,color=$8 WHERE id=$9 RETURNING *',
     [nama,jenis,lokasi,jumlah,kondisi,desc||'',foto||'',color||'#1D9E75',req.params.id]
   );
   res.json(rows[0]);
