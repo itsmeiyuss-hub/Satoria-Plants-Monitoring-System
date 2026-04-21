@@ -1,8 +1,8 @@
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
+const { Pool } = require('pg');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,129 +14,131 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// ─── Paths ────────────────────────────────────────────────────────────────────
-const DATA_FILE      = path.join(__dirname, 'data', 'plants.json');
-const SPOTS_FILE     = path.join(__dirname, 'data', 'spots.json');
-const BUILDINGS_FILE = path.join(__dirname, 'data', 'buildings.json');
-const PUBLIC_DIR     = path.join(__dirname, 'public');
+// ─── Database Config ──────────────────────────────────────────────────────────
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
 
-// ─── Ensure directories & default data files exist ───────────────────────────
-if (!fs.existsSync(path.join(__dirname, 'data'))) fs.mkdirSync(path.join(__dirname, 'data'));
+// ─── Init Database Tables ─────────────────────────────────────────────────────
+async function initDB() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS plants (
+      id SERIAL PRIMARY KEY,
+      nama TEXT, jenis TEXT, lokasi TEXT,
+      jumlah INTEGER, kondisi TEXT, desc TEXT,
+      foto TEXT, color TEXT
+    );
+    CREATE TABLE IF NOT EXISTS spots (
+      id SERIAL PRIMARY KEY,
+      x FLOAT, y FLOAT, "plantId" INTEGER, label TEXT
+    );
+    CREATE TABLE IF NOT EXISTS buildings (
+      id SERIAL PRIMARY KEY,
+      x FLOAT, y FLOAT, w FLOAT, h FLOAT,
+      label TEXT, color TEXT, rotate FLOAT
+    );
+  `);
 
-const DEFAULT_PLANTS = [
-  {id:1,  nama:'Walisongo',        jenis:'Schefflera arboricola',         lokasi:'Area Taman',     jumlah:10, kondisi:'Baik',            desc:'', foto:'', color:'#1D9E75'},
-  {id:2,  nama:'Daun Pucuk Merah', jenis:'Syzygium myrtifolium Walp.',    lokasi:'Taman Depan',    jumlah:15, kondisi:'Baik',            desc:'', foto:'', color:'#639922'},
-  {id:3,  nama:'Lotus',            jenis:'Nelumbo nucifera',              lokasi:'Kolam',          jumlah:5,  kondisi:'Baik',            desc:'', foto:'', color:'#0F6E56'},
-  {id:4,  nama:'Mawar Jambe',      jenis:'Cycas sp',                      lokasi:'Area Kantor',    jumlah:8,  kondisi:'Baik',            desc:'', foto:'', color:'#3B6D11'},
-  {id:5,  nama:'Kaki Gajah',       jenis:'genus Adansonia',               lokasi:'Area Luar',      jumlah:3,  kondisi:'Baik',            desc:'', foto:'', color:'#9FE1CB'},
-  {id:6,  nama:'Canna Lily',       jenis:'Canna indica',                  lokasi:'Taman Tengah',   jumlah:20, kondisi:'Baik',            desc:'', foto:'', color:'#FAC775'},
-  {id:7,  nama:'Pohon Asoka',      jenis:'Saraca Indica',                 lokasi:'Gerbang Masuk',  jumlah:6,  kondisi:'Baik',            desc:'', foto:'', color:'#97C459'},
-  {id:8,  nama:'Bunga Mondokaki',  jenis:'Tabernaemontana divaricata',    lokasi:'Taman Samping',  jumlah:12, kondisi:'Baik',            desc:'', foto:'', color:'#D4537E'},
-  {id:9,  nama:'Pohon Naga',       jenis:'Dracaena marginata',            lokasi:'Lobby',          jumlah:4,  kondisi:'Baik',            desc:'', foto:'', color:'#5B9CF2'},
-  {id:10, nama:'Pohon Hujan',      jenis:'Spathodea campanulata',         lokasi:'Jalan Utama',    jumlah:7,  kondisi:'Perlu Perawatan', desc:'', foto:'', color:'#F2B851'},
-  {id:11, nama:'Sambang Darah',    jenis:'Excoecaria cochinchinensis',    lokasi:'Pagar Timur',    jumlah:25, kondisi:'Baik',            desc:'', foto:'', color:'#E05C5C'},
-  {id:12, nama:'Lili Semak',       jenis:'Clivia miniata',                lokasi:'Taman Indoor',   jumlah:9,  kondisi:'Baik',            desc:'', foto:'', color:'#B5A4E0'},
-  {id:13, nama:'Tanaman Puring',   jenis:'Codiaeum variegatum',           lokasi:'Area Produksi',  jumlah:30, kondisi:'Baik',            desc:'', foto:'', color:'#7FB5A8'},
-  {id:14, nama:'Palem Lontar',     jenis:'Borassus flabellifer',          lokasi:'Area Parkir',    jumlah:5,  kondisi:'Baik',            desc:'', foto:'', color:'#C68A3E'},
-];
+  // Insert default data if empty
+  const { rows: plants } = await pool.query('SELECT id FROM plants LIMIT 1');
+  if (plants.length === 0) {
+    const defaultPlants = [
+      ['Walisongo','Schefflera arboricola','Area Taman',10,'Baik','','','#1D9E75'],
+      ['Daun Pucuk Merah','Syzygium myrtifolium Walp.','Taman Depan',15,'Baik','','','#639922'],
+      ['Lotus','Nelumbo nucifera','Kolam',5,'Baik','','','#0F6E56'],
+      ['Mawar Jambe','Cycas sp','Area Kantor',8,'Baik','','','#3B6D11'],
+      ['Kaki Gajah','genus Adansonia','Area Luar',3,'Baik','','','#9FE1CB'],
+      ['Canna Lily','Canna indica','Taman Tengah',20,'Baik','','','#FAC775'],
+      ['Pohon Asoka','Saraca Indica','Gerbang Masuk',6,'Baik','','','#97C459'],
+      ['Bunga Mondokaki','Tabernaemontana divaricata','Taman Samping',12,'Baik','','','#D4537E'],
+      ['Pohon Naga','Dracaena marginata','Lobby',4,'Baik','','','#5B9CF2'],
+      ['Pohon Hujan','Spathodea campanulata','Jalan Utama',7,'Perlu Perawatan','','','#F2B851'],
+      ['Sambang Darah','Excoecaria cochinchinensis','Pagar Timur',25,'Baik','','','#E05C5C'],
+      ['Lili Semak','Clivia miniata','Taman Indoor',9,'Baik','','','#B5A4E0'],
+      ['Tanaman Puring','Codiaeum variegatum','Area Produksi',30,'Baik','','','#7FB5A8'],
+      ['Palem Lontar','Borassus flabellifer','Area Parkir',5,'Baik','','','#C68A3E'],
+    ];
+    for (const p of defaultPlants) {
+      await pool.query('INSERT INTO plants (nama,jenis,lokasi,jumlah,kondisi,desc,foto,color) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)', p);
+    }
+  }
 
-const DEFAULT_SPOTS = [
-  {id:1,  x:80,  y:80,  plantId:1,  label:'Taman Depan'},
-  {id:2,  x:200, y:60,  plantId:2,  label:'Area Kantor'},
-  {id:3,  x:680, y:90,  plantId:3,  label:'Kolam'},
-  {id:4,  x:760, y:200, plantId:4,  label:'Area Samping'},
-  {id:5,  x:140, y:200, plantId:5,  label:'Pintu Masuk'},
-  {id:6,  x:620, y:320, plantId:6,  label:'WWTP'},
-  {id:7,  x:400, y:390, plantId:7,  label:'Gerbang'},
-  {id:8,  x:80,  y:370, plantId:8,  label:'Taman Sisi'},
-  {id:9,  x:300, y:180, plantId:9,  label:'Lobby'},
-  {id:10, x:500, y:140, plantId:10, label:'Jalan Utama'},
-  {id:11, x:240, y:350, plantId:11, label:'Pagar Timur'},
-  {id:12, x:730, y:400, plantId:12, label:'Taman Indoor'},
-  {id:13, x:450, y:260, plantId:13, label:'Produksi'},
-  {id:14, x:560, y:420, plantId:14, label:'Parkir'},
-];
+  const { rows: spots } = await pool.query('SELECT id FROM spots LIMIT 1');
+  if (spots.length === 0) {
+    const defaultSpots = [
+      [80,80,1,'Taman Depan'],[200,60,2,'Area Kantor'],[680,90,3,'Kolam'],
+      [760,200,4,'Area Samping'],[140,200,5,'Pintu Masuk'],[620,320,6,'WWTP'],
+      [400,390,7,'Gerbang'],[80,370,8,'Taman Sisi'],[300,180,9,'Lobby'],
+      [500,140,10,'Jalan Utama'],[240,350,11,'Pagar Timur'],[730,400,12,'Taman Indoor'],
+      [450,260,13,'Produksi'],[560,420,14,'Parkir'],
+    ];
+    for (const s of defaultSpots) {
+      await pool.query('INSERT INTO spots (x,y,"plantId",label) VALUES ($1,$2,$3,$4)', s);
+    }
+  }
 
-const DEFAULT_BUILDINGS = [
-  {x:30, y:30, w:160,h:80,  label:'Kantor Utama',  color:'#B5D4F4', rotate:0},
-  {x:210,y:30, w:120,h:60,  label:'Gudang FG 1',   color:'#C0DD97', rotate:0},
-  {x:340,y:30, w:100,h:50,  label:'Lab QC',        color:'#FAC775', rotate:0},
-  {x:30, y:130,w:130,h:100, label:'Workshop',      color:'#F5C4B3', rotate:0},
-  {x:170,y:110,w:180,h:90,  label:'Pharma Plant',  color:'#B5D4F4', rotate:0},
-  {x:360,y:100,w:150,h:120, label:'WH Raw Mat',    color:'#C0DD97', rotate:0},
-  {x:520,y:30, w:140,h:80,  label:'Powder Plant',  color:'#FAC775', rotate:0},
-  {x:520,y:120,w:200,h:100, label:'Biscuit Plant', color:'#F5C4B3', rotate:0},
-  {x:670,y:30, w:120,h:80,  label:'Flavour Plant', color:'#D3D1C7', rotate:0},
-  {x:30, y:250,w:200,h:110, label:'Gudang FG 3',   color:'#C0DD97', rotate:0},
-  {x:240,y:220,w:160,h:130, label:'WWTP',          color:'#9FE1CB', rotate:0},
-  {x:410,y:240,w:250,h:120, label:'Lapangan',      color:'#EAF3DE', rotate:0},
-  {x:30, y:380,w:160,h:80,  label:'Gerbang & Pos', color:'#D3D1C7', rotate:0},
-  {x:200,y:370,w:100,h:80,  label:'Musholla',      color:'#EEEDFE', rotate:0},
-  {x:660,y:240,w:170,h:120, label:'Gudang Spare',  color:'#FAC775', rotate:0},
-  {x:450,y:380,w:100,h:80,  label:'Genset',        color:'#F5C4B3', rotate:0},
-  {x:560,y:370,w:120,h:90,  label:'Cooling Tower', color:'#B5D4F4', rotate:0},
-  {x:700,y:370,w:140,h:80,  label:'Boiler Room',   color:'#F0997B', rotate:0},
-];
+  const { rows: buildings } = await pool.query('SELECT id FROM buildings LIMIT 1');
+  if (buildings.length === 0) {
+    const defaultBuildings = [
+      [30,30,160,80,'Kantor Utama','#B5D4F4',0],[210,30,120,60,'Gudang FG 1','#C0DD97',0],
+      [340,30,100,50,'Lab QC','#FAC775',0],[30,130,130,100,'Workshop','#F5C4B3',0],
+      [170,110,180,90,'Pharma Plant','#B5D4F4',0],[360,100,150,120,'WH Raw Mat','#C0DD97',0],
+      [520,30,140,80,'Powder Plant','#FAC775',0],[520,120,200,100,'Biscuit Plant','#F5C4B3',0],
+      [670,30,120,80,'Flavour Plant','#D3D1C7',0],[30,250,200,110,'Gudang FG 3','#C0DD97',0],
+      [240,220,160,130,'WWTP','#9FE1CB',0],[410,240,250,120,'Lapangan','#EAF3DE',0],
+      [30,380,160,80,'Gerbang & Pos','#D3D1C7',0],[200,370,100,80,'Musholla','#EEEDFE',0],
+      [660,240,170,120,'Gudang Spare','#FAC775',0],[450,380,100,80,'Genset','#F5C4B3',0],
+      [560,370,120,90,'Cooling Tower','#B5D4F4',0],[700,370,140,80,'Boiler Room','#F0997B',0],
+    ];
+    for (const b of defaultBuildings) {
+      await pool.query('INSERT INTO buildings (x,y,w,h,label,color,rotate) VALUES ($1,$2,$3,$4,$5,$6,$7)', b);
+    }
+  }
 
-if (!fs.existsSync(DATA_FILE))      fs.writeFileSync(DATA_FILE,      JSON.stringify(DEFAULT_PLANTS,    null, 2));
-if (!fs.existsSync(SPOTS_FILE))     fs.writeFileSync(SPOTS_FILE,     JSON.stringify(DEFAULT_SPOTS,     null, 2));
-if (!fs.existsSync(BUILDINGS_FILE)) fs.writeFileSync(BUILDINGS_FILE, JSON.stringify(DEFAULT_BUILDINGS, null, 2));
+  console.log('✅ Database ready');
+}
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-function readJSON(file) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
-function writeJSON(file, data) { fs.writeFileSync(file, JSON.stringify(data, null, 2)); }
-function nextId(arr) { return arr.length ? Math.max(...arr.map(x => x.id)) + 1 : 1; }
-
-// ─── Multer (simpan sementara di memory, lalu upload ke Cloudinary) ───────────
+// ─── Multer ───────────────────────────────────────────────────────────────────
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));
-app.use(express.static(PUBLIC_DIR));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // ─── API: Plants ──────────────────────────────────────────────────────────────
-app.get('/api/plants', (req, res) => {
-  res.json(readJSON(DATA_FILE));
+app.get('/api/plants', async (req, res) => {
+  const { rows } = await pool.query('SELECT * FROM plants ORDER BY id');
+  res.json(rows);
 });
 
-app.post('/api/plants', (req, res) => {
-  const plants = readJSON(DATA_FILE);
-  const plant = { id: nextId(plants), ...req.body };
-  plants.push(plant);
-  writeJSON(DATA_FILE, plants);
-  res.json(plant);
+app.post('/api/plants', async (req, res) => {
+  const { nama,jenis,lokasi,jumlah,kondisi,desc,foto,color } = req.body;
+  const { rows } = await pool.query(
+    'INSERT INTO plants (nama,jenis,lokasi,jumlah,kondisi,desc,foto,color) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',
+    [nama,jenis,lokasi,jumlah,kondisi,desc||'',foto||'',color||'#1D9E75']
+  );
+  res.json(rows[0]);
 });
 
-app.put('/api/plants/:id', (req, res) => {
-  const plants = readJSON(DATA_FILE);
-  const idx = plants.findIndex(p => p.id === parseInt(req.params.id));
-  if (idx === -1) return res.status(404).json({ error: 'Not found' });
-  plants[idx] = { ...plants[idx], ...req.body, id: plants[idx].id };
-  writeJSON(DATA_FILE, plants);
-  res.json(plants[idx]);
+app.put('/api/plants/:id', async (req, res) => {
+  const { nama,jenis,lokasi,jumlah,kondisi,desc,foto,color } = req.body;
+  const { rows } = await pool.query(
+    'UPDATE plants SET nama=$1,jenis=$2,lokasi=$3,jumlah=$4,kondisi=$5,desc=$6,foto=$7,color=$8 WHERE id=$9 RETURNING *',
+    [nama,jenis,lokasi,jumlah,kondisi,desc||'',foto||'',color||'#1D9E75',req.params.id]
+  );
+  res.json(rows[0]);
 });
 
-app.delete('/api/plants/:id', (req, res) => {
-  let plants = readJSON(DATA_FILE);
-  const id = parseInt(req.params.id);
-  plants = plants.filter(p => p.id !== id);
-  writeJSON(DATA_FILE, plants);
-
-  let spots = readJSON(SPOTS_FILE);
-  spots = spots.filter(s => s.plantId !== id);
-  writeJSON(SPOTS_FILE, spots);
-
+app.delete('/api/plants/:id', async (req, res) => {
+  await pool.query('DELETE FROM plants WHERE id=$1', [req.params.id]);
+  await pool.query('DELETE FROM spots WHERE "plantId"=$1', [req.params.id]);
   res.json({ ok: true });
 });
 
-// ─── API: Photo upload ke Cloudinary ─────────────────────────────────────────
+// ─── API: Photo Upload ────────────────────────────────────────────────────────
 app.post('/api/plants/:id/foto', upload.single('foto'), async (req, res) => {
   try {
-    const plants = readJSON(DATA_FILE);
-    const idx = plants.findIndex(p => p.id === parseInt(req.params.id));
-    if (idx === -1) return res.status(404).json({ error: 'Not found' });
-
-    // Upload ke Cloudinary
     const result = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         { folder: 'satoria-plants', resource_type: 'image' },
@@ -144,69 +146,84 @@ app.post('/api/plants/:id/foto', upload.single('foto'), async (req, res) => {
       );
       stream.end(req.file.buffer);
     });
-
-    // Simpan URL Cloudinary ke data tanaman
-    plants[idx].foto = result.secure_url;
-    writeJSON(DATA_FILE, plants);
+    await pool.query('UPDATE plants SET foto=$1 WHERE id=$2', [result.secure_url, req.params.id]);
     res.json({ foto: result.secure_url });
-
   } catch (err) {
     console.error('Upload error:', err);
     res.status(500).json({ error: 'Gagal upload foto' });
   }
 });
 
-// ─── API: Map Spots ───────────────────────────────────────────────────────────
-app.get('/api/spots', (req, res) => {
-  res.json(readJSON(SPOTS_FILE));
+// ─── API: Spots ───────────────────────────────────────────────────────────────
+app.get('/api/spots', async (req, res) => {
+  const { rows } = await pool.query('SELECT * FROM spots ORDER BY id');
+  res.json(rows);
 });
 
-app.post('/api/spots', (req, res) => {
-  const spots = readJSON(SPOTS_FILE);
-  const spot = { id: nextId(spots), ...req.body };
-  spots.push(spot);
-  writeJSON(SPOTS_FILE, spots);
-  res.json(spot);
+app.post('/api/spots', async (req, res) => {
+  const { x,y,plantId,label } = req.body;
+  const { rows } = await pool.query(
+    'INSERT INTO spots (x,y,"plantId",label) VALUES ($1,$2,$3,$4) RETURNING *',
+    [x,y,plantId,label]
+  );
+  res.json(rows[0]);
 });
 
-app.put('/api/spots/:id', (req, res) => {
-  const spots = readJSON(SPOTS_FILE);
-  const idx = spots.findIndex(s => s.id === parseInt(req.params.id));
-  if (idx === -1) return res.status(404).json({ error: 'Not found' });
-  spots[idx] = { ...spots[idx], ...req.body, id: spots[idx].id };
-  writeJSON(SPOTS_FILE, spots);
-  res.json(spots[idx]);
+app.put('/api/spots/:id', async (req, res) => {
+  const { x,y,plantId,label } = req.body;
+  const { rows } = await pool.query(
+    'UPDATE spots SET x=$1,y=$2,"plantId"=$3,label=$4 WHERE id=$5 RETURNING *',
+    [x,y,plantId,label,req.params.id]
+  );
+  res.json(rows[0]);
 });
 
-app.put('/api/spots', (req, res) => {
-  writeJSON(SPOTS_FILE, req.body);
+app.put('/api/spots', async (req, res) => {
+  const spots = req.body;
+  for (const s of spots) {
+    await pool.query(
+      'UPDATE spots SET x=$1,y=$2,"plantId"=$3,label=$4 WHERE id=$5',
+      [s.x,s.y,s.plantId,s.label,s.id]
+    );
+  }
   res.json({ ok: true });
 });
 
-app.delete('/api/spots/:id', (req, res) => {
-  let spots = readJSON(SPOTS_FILE);
-  spots = spots.filter(s => s.id !== parseInt(req.params.id));
-  writeJSON(SPOTS_FILE, spots);
+app.delete('/api/spots/:id', async (req, res) => {
+  await pool.query('DELETE FROM spots WHERE id=$1', [req.params.id]);
   res.json({ ok: true });
 });
 
-// ─── API: Buildings Layout ────────────────────────────────────────────────────
-app.get('/api/buildings', (req, res) => {
-  res.json(readJSON(BUILDINGS_FILE));
+// ─── API: Buildings ───────────────────────────────────────────────────────────
+app.get('/api/buildings', async (req, res) => {
+  const { rows } = await pool.query('SELECT * FROM buildings ORDER BY id');
+  res.json(rows);
 });
 
-app.put('/api/buildings', (req, res) => {
-  writeJSON(BUILDINGS_FILE, req.body);
+app.put('/api/buildings', async (req, res) => {
+  const buildings = req.body;
+  await pool.query('DELETE FROM buildings');
+  for (const b of buildings) {
+    await pool.query(
+      'INSERT INTO buildings (x,y,w,h,label,color,rotate) VALUES ($1,$2,$3,$4,$5,$6,$7)',
+      [b.x,b.y,b.w,b.h,b.label,b.color,b.rotate]
+    );
+  }
   res.json({ ok: true });
 });
 
-// ─── Catch-all → index.html ───────────────────────────────────────────────────
+// ─── Catch-all ────────────────────────────────────────────────────────────────
 app.get('*', (req, res) => {
-  res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // ─── Start ────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`\n🌿 Satoria Plant Monitoring`);
-  console.log(`   Server berjalan di: http://localhost:${PORT}\n`);
+initDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`\n🌿 Satoria Plant Monitoring`);
+    console.log(`   Server berjalan di: http://localhost:${PORT}\n`);
+  });
+}).catch(err => {
+  console.error('Database error:', err);
+  process.exit(1);
 });
