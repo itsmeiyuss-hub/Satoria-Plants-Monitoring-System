@@ -7,106 +7,49 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --green-900: #0A3D2A;
-    --green-800: #0F5C3E;
-    --green-700: #1D9E75;
-    --green-600: #2AB88A;
-    --green-400: #5DCAA5;
-    --green-200: #9FE1CB;
-    --green-100: #D6F4EC;
-    --green-50:  #EAF7F3;
-    --sand-100:  #F5F0E8;
-    --sand-200:  #EBE3D0;
-    --sand-600:  #9E8B6E;
-    --amber-400: #F2B851;
-    --amber-100: #FEF5D6;
-    --red-400:   #E05C5C;
-    --red-100:   #FCEBEB;
-    --blue-400:  #5B9CF2;
-    --blue-100:  #E6F0FD;
-    --text-primary:   #1A2B22;
-    --text-secondary: #5A7565;
-    --text-muted:     #91A899;
-    --bg-main:        #F7F9F5;
-    --bg-card:        #FFFFFF;
-    --bg-card-hover:  #F0F7F4;
-    --border:         #D8E8DC;
-    --border-light:   #EBF4EF;
-    --shadow-sm:      0 1px 4px rgba(10,61,42,.06);
-    --shadow-md:      0 4px 16px rgba(10,61,42,.10);
-    --shadow-lg:      0 12px 40px rgba(10,61,42,.14);
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 18px;
-    --radius-xl: 24px;
+    --green-900: #0A3D2A; --green-800: #0F5C3E; --green-700: #1D9E75;
+    --green-600: #2AB88A; --green-400: #5DCAA5; --green-200: #9FE1CB;
+    --green-100: #D6F4EC; --green-50: #EAF7F3; --sand-100: #F5F0E8;
+    --sand-200: #EBE3D0; --sand-600: #9E8B6E; --amber-400: #F2B851;
+    --amber-100: #FEF5D6; --red-400: #E05C5C; --red-100: #FCEBEB;
+    --blue-400: #5B9CF2; --blue-100: #E6F0FD;
+    --text-primary: #1A2B22; --text-secondary: #5A7565; --text-muted: #91A899;
+    --bg-main: #F7F9F5; --bg-card: #FFFFFF; --bg-card-hover: #F0F7F4;
+    --border: #D8E8DC; --border-light: #EBF4EF;
+    --shadow-sm: 0 1px 4px rgba(10,61,42,.06); --shadow-md: 0 4px 16px rgba(10,61,42,.10);
+    --shadow-lg: 0 12px 40px rgba(10,61,42,.14);
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px; --radius-xl: 24px;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg-main); color: var(--text-primary); min-height: 100vh; line-height: 1.5; }
-
   .page { display: none; animation: fadeUp .35s ease both; }
   .page.active { display: block; }
   @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-
-  #toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-    background: var(--green-900); color: #fff; padding: 10px 20px;
-    border-radius: var(--radius-md); font-size: 13px; font-weight: 500;
-    box-shadow: var(--shadow-lg); z-index: 999; transition: transform .3s ease;
-    white-space: nowrap;
-  }
+  #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--green-900); color: #fff; padding: 10px 20px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; box-shadow: var(--shadow-lg); z-index: 999; transition: transform .3s ease; white-space: nowrap; }
   #toast.show { transform: translateX(-50%) translateY(0); }
-
-  .nav {
-    background: var(--bg-card); border-bottom: 1px solid var(--border-light);
-    padding: 0 28px; height: 62px;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px);
-  }
+  .nav { background: var(--bg-card); border-bottom: 1px solid var(--border-light); padding: 0 28px; height: 62px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); }
   .nav-logo { display: flex; align-items: center; gap: 10px; }
   .nav-logo img { height: 38px; object-fit: contain; }
   .nav-logo-text { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--green-700); line-height: 1.2; }
   .nav-logo-text small { display: block; font-family: 'DM Sans', sans-serif; font-size: 10px; color: var(--text-muted); font-weight: 500; }
   .nav-links { display: flex; align-items: center; gap: 6px; }
-  .nav-btn {
-    padding: 6px 14px; border-radius: var(--radius-sm); border: none;
-    background: transparent; cursor: pointer; font-size: 13px;
-    font-family: 'DM Sans', sans-serif; color: var(--text-secondary);
-    transition: all .15s; font-weight: 500;
-  }
+  .nav-btn { padding: 6px 14px; border-radius: var(--radius-sm); border: none; background: transparent; cursor: pointer; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--text-secondary); transition: all .15s; font-weight: 500; }
   .nav-btn:hover { background: var(--green-50); color: var(--text-primary); }
   .nav-btn.active { background: var(--green-50); color: var(--green-800); }
-
-  .btn {
-    padding: 8px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border);
-    background: var(--bg-card); color: var(--text-primary); cursor: pointer;
-    font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 500;
-    transition: all .15s; display: inline-flex; align-items: center; gap: 6px;
-  }
+  .btn { padding: 8px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-card); color: var(--text-primary); cursor: pointer; font-size: 13px; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: all .15s; display: inline-flex; align-items: center; gap: 6px; }
   .btn:hover { background: var(--bg-card-hover); border-color: var(--green-200); }
   .btn:disabled { opacity: .5; cursor: not-allowed; }
   .btn-primary { background: var(--green-700); border-color: var(--green-700); color: #fff; }
   .btn-primary:hover { background: var(--green-800); border-color: var(--green-800); }
   .btn-danger { color: var(--red-400); border-color: #F7C1C1; }
   .btn-danger:hover { background: var(--red-100); }
-
-  input, select, textarea {
-    width: 100%; padding: 9px 12px; border-radius: var(--radius-sm);
-    border: 1px solid var(--border); background: var(--bg-card);
-    color: var(--text-primary); font-size: 14px; font-family: 'DM Sans', sans-serif;
-    transition: border-color .15s, box-shadow .15s; outline: none;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--green-700); box-shadow: 0 0 0 3px rgba(29,158,117,.12);
-  }
-
+  input, select, textarea { width: 100%; padding: 9px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-card); color: var(--text-primary); font-size: 14px; font-family: 'DM Sans', sans-serif; transition: border-color .15s, box-shadow .15s; outline: none; }
+  input:focus, select:focus, textarea:focus { border-color: var(--green-700); box-shadow: 0 0 0 3px rgba(29,158,117,.12); }
   .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: .3px; text-transform: uppercase; }
-  .badge-baik   { background: var(--green-50);  color: var(--green-800); }
-  .badge-rawat  { background: var(--amber-100); color: #854F0B; }
-  .badge-kritis { background: var(--red-100);   color: #A32D2D; }
-
+  .badge-baik { background: var(--green-50); color: var(--green-800); }
+  .badge-rawat { background: var(--amber-100); color: #854F0B; }
+  .badge-kritis { background: var(--red-100); color: #A32D2D; }
   .card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
-
   .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 24px; }
   .stat-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 16px; box-shadow: var(--shadow-sm); transition: transform .15s, box-shadow .15s; }
   .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
@@ -114,7 +57,6 @@
   .stat-value { font-family: 'DM Serif Display', serif; font-size: 32px; line-height: 1; }
   .stat-card.green { background: linear-gradient(135deg, var(--green-50), #fff); border-color: var(--green-100); }
   .stat-card.amber { background: linear-gradient(135deg, var(--amber-100), #fff); border-color: #FAE3AF; }
-
   .plant-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .plant-table th { text-align: left; padding: 10px 12px; color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--border); background: var(--bg-main); }
   .plant-table td { padding: 12px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
@@ -124,18 +66,8 @@
   .plant-species { font-size: 12px; color: var(--text-secondary); font-style: italic; }
   .plant-photo-thumb { width: 38px; height: 38px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-light); flex-shrink: 0; }
   .plant-photo-placeholder { width: 38px; height: 38px; border-radius: var(--radius-sm); background: var(--green-50); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-
-  .hero {
-    background: linear-gradient(150deg, var(--green-900) 0%, var(--green-700) 60%, var(--green-600) 100%);
-    min-height: 440px; display: flex; flex-direction: column; align-items: center;
-    justify-content: center; padding: 60px 20px; text-align: center;
-    position: relative; overflow: hidden;
-  }
-  .hero::before {
-    content: ''; position: absolute; inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239FE1CB' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    pointer-events: none;
-  }
+  .hero { background: linear-gradient(150deg, var(--green-900) 0%, var(--green-700) 60%, var(--green-600) 100%); min-height: 440px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239FE1CB' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); pointer-events: none; }
   .hero-logo { height: 90px; object-fit: contain; margin-bottom: 24px; filter: drop-shadow(0 8px 24px rgba(0,0,0,.4)); animation: floatLeaf 4s ease-in-out infinite; background: transparent; }
   @keyframes floatLeaf { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
   .hero h1 { font-family: 'DM Serif Display', serif; font-size: 36px; color: #fff; margin-bottom: 8px; line-height: 1.15; }
@@ -144,24 +76,20 @@
   .hero-desc { color: var(--green-400); font-size: 13px; margin-bottom: 36px; max-width: 420px; }
   .hero-cta { background: #fff; color: var(--green-800); border: none; padding: 14px 36px; border-radius: var(--radius-md); font-size: 15px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,.2); transition: all .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.25); }
-
   .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 700px; margin: 0 auto; }
   .feature-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px 16px; text-align: center; box-shadow: var(--shadow-sm); transition: transform .2s, box-shadow .2s; }
   .feature-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
   .feature-icon { font-size: 28px; margin-bottom: 10px; }
   .feature-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
   .feature-desc { font-size: 12px; color: var(--text-secondary); }
-
   .content { padding: 28px; max-width: 960px; margin: 0 auto; }
   .page-title { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 4px; }
   .page-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; }
-
   .map-container { position: relative; width: 100%; border-radius: var(--radius-md); background: #d4edda; overflow: hidden; min-height: 480px; }
   #factory-map { width: 100%; height: auto; display: block; }
   .plant-popup { display: none; position: absolute; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; width: 230px; box-shadow: var(--shadow-lg); z-index: 10; }
   .popup-close { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 16px; padding: 0; line-height: 1; transition: color .15s; }
   .popup-close:hover { color: var(--text-primary); }
-
   .legend-wrap { margin-top: 14px; display: flex; align-items: center; gap: 8px; }
   .legend-label { font-size: 12px; color: var(--text-secondary); white-space: nowrap; flex-shrink: 0; }
   .legend-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; flex: 1; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
@@ -169,11 +97,9 @@
   .legend-scroll::-webkit-scrollbar-track { background: transparent; }
   .legend-scroll::-webkit-scrollbar-thumb { background: var(--green-200); border-radius: 2px; }
   .legend-chip { display: inline-flex; align-items: center; gap: 5px; color: #fff; padding: 5px 13px; border-radius: 20px; font-size: 11px; font-weight: 500; white-space: nowrap; flex-shrink: 0; scroll-snap-align: start; }
-
   .map-edit-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; padding: 10px 14px; background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; }
   .map-edit-bar label { color: var(--text-secondary); font-weight: 500; }
   .edit-hint { font-size: 12px; color: var(--text-muted); }
-
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,61,42,.45); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--bg-card); border-radius: var(--radius-xl); padding: 28px; width: 400px; max-width: 92vw; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); animation: modalIn .25s ease both; }
@@ -182,37 +108,24 @@
   .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
   .form-label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
   .form-group { margin-bottom: 16px; }
-
   .photo-preview { width: 100%; height: 140px; border-radius: var(--radius-sm); border: 2px dashed var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; background: var(--bg-main); transition: border-color .15s; }
   .photo-preview:hover { border-color: var(--green-400); }
   .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
   .photo-placeholder { text-align: center; color: var(--text-muted); font-size: 12px; }
   .photo-placeholder span { font-size: 28px; display: block; margin-bottom: 4px; }
-
   .loading { text-align: center; padding: 48px; color: var(--text-muted); font-size: 14px; }
   .spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid var(--green-100); border-top-color: var(--green-700); border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 12px; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  @media (max-width: 640px) {
-    .hero h1 { font-size: 26px; }
-    .content { padding: 16px; }
-    .nav { padding: 0 16px; }
-    .nav-logo-text .full { display: none; }
-    .plant-table .hide-mobile { display: none; }
-  }
-
+  @media (max-width: 640px) { .hero h1 { font-size: 26px; } .content { padding: 16px; } .nav { padding: 0 16px; } .nav-logo-text .full { display: none; } .plant-table .hide-mobile { display: none; } }
   #lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:9999; align-items:center; justify-content:center; cursor:zoom-out; }
   #lightbox.show { display:flex; }
   #lightbox img { max-width:90vw; max-height:90vh; object-fit:contain; border-radius:var(--radius-md); box-shadow:0 24px 80px rgba(0,0,0,.6); }
   #lightbox-close { position:absolute; top:20px; right:28px; color:#fff; font-size:32px; cursor:pointer; line-height:1; opacity:.8; transition:opacity .15s; }
   #lightbox-close:hover { opacity:1; }
-
   .nav-logout { padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--border); background:transparent; cursor:pointer; font-size:13px; font-family:'DM Sans',sans-serif; color:var(--text-secondary); transition:all .15s; font-weight:500; display:flex; align-items:center; gap:5px; }
   .nav-logout:hover { background:var(--red-100); color:var(--red-400); border-color:#F7C1C1; }
-
   .b-color-opt { width:26px; height:26px; border-radius:6px; cursor:pointer; border:2px solid transparent; transition: transform .1s; }
   .b-color-opt:hover { transform: scale(1.15); }
-
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--green-200); border-radius: 3px; }
@@ -221,13 +134,12 @@
 <body>
 
 <div id="toast"></div>
-
 <div id="lightbox" onclick="closeLightbox()">
   <span id="lightbox-close" onclick="closeLightbox()">✕</span>
   <img id="lightbox-img" src="" alt="Foto Tanaman">
 </div>
 
-<!-- ═══ LANDING ═══ -->
+<!-- LANDING -->
 <div id="page-landing" class="page active">
   <div class="hero">
     <img src="/logo-satoria.png" class="hero-logo" alt="Satoria Logo">
@@ -253,7 +165,7 @@
   </footer>
 </div>
 
-<!-- ═══ DASHBOARD ═══ -->
+<!-- DASHBOARD -->
 <div id="page-dashboard" class="page">
   <nav class="nav">
     <div class="nav-logo">
@@ -285,7 +197,7 @@
   </div>
 </div>
 
-<!-- ═══ MAP ═══ -->
+<!-- MAP -->
 <div id="page-map" class="page">
   <nav class="nav">
     <div class="nav-logo">
@@ -301,7 +213,6 @@
   <div class="content">
     <h1 class="page-title">Denah Tanaman PT Satoria</h1>
     <p class="page-sub">Tap ikon tanaman untuk melihat detail · Aktifkan mode edit untuk memindahkan atau mengubah titik</p>
-
     <div class="map-edit-bar">
       <label>Mode:</label>
       <button class="btn" id="btn-edit-mode" onclick="toggleMapEdit()">✏️ Edit Denah</button>
@@ -312,7 +223,6 @@
         <button class="btn" id="btn-edit-layout" onclick="toggleLayoutEdit()">🏗️ Edit Layout</button>
       </div>
     </div>
-
     <div id="layout-edit-bar" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:10px 14px;background:#fff8e1;border:1px solid #FAC775;border-radius:var(--radius-sm);font-size:13px">
       <span style="font-weight:600;color:#854F0B">🏗️ Mode Edit Layout:</span>
       <button class="btn" onclick="addBuilding()" style="font-size:12px;padding:5px 10px">+ Tambah Kotak</button>
@@ -323,14 +233,12 @@
       <span id="layout-selected-info" style="font-size:11px;color:var(--text-muted)">Klik kotak untuk pilih · Seret untuk geser · Pojok untuk ubah ukuran</span>
       <button class="btn btn-primary" onclick="saveLayout()" style="margin-left:auto;font-size:12px;padding:5px 12px">✅ Selesai &amp; Simpan Layout</button>
     </div>
-
     <div class="card" style="padding:14px">
       <div class="map-container" id="map-container">
         <svg id="factory-map" viewBox="0 0 860 480" xmlns="http://www.w3.org/2000/svg"></svg>
         <div class="plant-popup" id="plant-popup"></div>
       </div>
     </div>
-
     <div class="legend-wrap">
       <span class="legend-label">Keterangan:</span>
       <div class="legend-scroll" id="legend"></div>
@@ -338,7 +246,7 @@
   </div>
 </div>
 
-<!-- ═══ MODAL TAMBAH/EDIT TANAMAN ═══ -->
+<!-- MODAL TAMBAH/EDIT TANAMAN -->
 <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <h3 class="modal-title" id="modal-title">Tambah Tanaman</h3>
@@ -346,10 +254,7 @@
     <div class="form-group"><label class="form-label">Jenis / Famili (Latin)</label><input id="m-jenis" type="text" placeholder="e.g. Mangifera indica"></div>
     <div class="form-group"><label class="form-label">Lokasi di Pabrik</label><input id="m-lokasi" type="text" placeholder="e.g. Area Depan Kantor"></div>
     <div class="form-group"><label class="form-label">Jumlah Pohon</label><input id="m-jumlah" type="number" placeholder="0" min="0"></div>
-    <div class="form-group">
-      <label class="form-label">Kondisi</label>
-      <select id="m-kondisi"><option>Baik</option><option>Perlu Perawatan</option><option>Kritis</option></select>
-    </div>
+    <div class="form-group"><label class="form-label">Kondisi</label><select id="m-kondisi"><option>Baik</option><option>Perlu Perawatan</option><option>Kritis</option></select></div>
     <div class="form-group"><label class="form-label">Deskripsi <span style="font-weight:400;color:var(--text-muted)">(opsional)</span></label><textarea id="m-desc" rows="2" placeholder="Deskripsi singkat..." style="resize:vertical"></textarea></div>
     <div class="form-group">
       <label class="form-label">Foto Tanaman <span style="font-weight:400;color:var(--text-muted)">(opsional)</span></label>
@@ -359,7 +264,6 @@
       <input type="file" id="m-foto-input" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)">
       <button class="btn btn-danger" id="btn-remove-photo" onclick="removePhoto()" style="display:none;margin-top:6px;width:100%;justify-content:center">🗑 Hapus Foto</button>
     </div>
-    <!-- ✅ FIX: hidden fields untuk simpan state foto dan id -->
     <input type="hidden" id="m-edit-id" value="">
     <input type="hidden" id="m-existing-foto" value="">
     <div class="modal-footer">
@@ -369,7 +273,7 @@
   </div>
 </div>
 
-<!-- ═══ MODAL EDIT SPOT ═══ -->
+<!-- MODAL EDIT SPOT -->
 <div class="modal-overlay" id="spot-modal-overlay" onclick="closeSpotModal()">
   <div class="modal" onclick="event.stopPropagation()" style="width:320px">
     <h3 class="modal-title">Edit Titik Denah</h3>
@@ -382,14 +286,11 @@
   </div>
 </div>
 
-<!-- ═══ MODAL EDIT NAMA BUILDING ═══ -->
+<!-- MODAL EDIT NAMA BUILDING -->
 <div class="modal-overlay" id="building-name-modal" onclick="closeBuildingNameModal()">
   <div class="modal" onclick="event.stopPropagation()" style="width:320px">
     <h3 class="modal-title">✏️ Edit Nama Denah</h3>
-    <div class="form-group">
-      <label class="form-label">Nama Kotak</label>
-      <input id="bn-label-input" type="text" placeholder="e.g. Kantor Utama">
-    </div>
+    <div class="form-group"><label class="form-label">Nama Kotak</label><input id="bn-label-input" type="text" placeholder="e.g. Kantor Utama"></div>
     <div class="modal-footer">
       <button class="btn" onclick="closeBuildingNameModal()">Batal</button>
       <button class="btn btn-primary" onclick="saveBuildingName()">Simpan Nama</button>
@@ -397,25 +298,25 @@
   </div>
 </div>
 
-<!-- ═══ MODAL UBAH WARNA BUILDING ═══ -->
+<!-- MODAL UBAH WARNA BUILDING -->
 <div class="modal-overlay" id="building-color-modal" onclick="closeBuildingColorModal()">
   <div class="modal" onclick="event.stopPropagation()" style="width:340px">
     <h3 class="modal-title">🎨 Ubah Warna Denah</h3>
     <div class="form-group">
       <label class="form-label">Pilih Warna</label>
       <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:8px 0" id="bc-color-picker">
-        <div class="b-color-opt" data-color="#B5D4F4" style="background:#B5D4F4"></div>
-        <div class="b-color-opt" data-color="#C0DD97" style="background:#C0DD97"></div>
-        <div class="b-color-opt" data-color="#FAC775" style="background:#FAC775"></div>
-        <div class="b-color-opt" data-color="#F5C4B3" style="background:#F5C4B3"></div>
-        <div class="b-color-opt" data-color="#9FE1CB" style="background:#9FE1CB"></div>
-        <div class="b-color-opt" data-color="#EAF3DE" style="background:#EAF3DE"></div>
-        <div class="b-color-opt" data-color="#EEEDFE" style="background:#EEEDFE"></div>
-        <div class="b-color-opt" data-color="#D3D1C7" style="background:#D3D1C7"></div>
-        <div class="b-color-opt" data-color="#F0997B" style="background:#F0997B"></div>
-        <div class="b-color-opt" data-color="#E8D5F5" style="background:#E8D5F5"></div>
-        <div class="b-color-opt" data-color="#FFE4E4" style="background:#FFE4E4"></div>
-        <div class="b-color-opt" data-color="#D4EAF7" style="background:#D4EAF7"></div>
+        <div class="b-color-opt" data-color="#B5D4F4" style="background:#B5D4F4" title="Biru Muda"></div>
+        <div class="b-color-opt" data-color="#C0DD97" style="background:#C0DD97" title="Hijau Muda"></div>
+        <div class="b-color-opt" data-color="#FAC775" style="background:#FAC775" title="Kuning"></div>
+        <div class="b-color-opt" data-color="#F5C4B3" style="background:#F5C4B3" title="Salmon"></div>
+        <div class="b-color-opt" data-color="#9FE1CB" style="background:#9FE1CB" title="Tosca"></div>
+        <div class="b-color-opt" data-color="#EAF3DE" style="background:#EAF3DE" title="Hijau Pucat"></div>
+        <div class="b-color-opt" data-color="#EEEDFE" style="background:#EEEDFE" title="Lavender"></div>
+        <div class="b-color-opt" data-color="#D3D1C7" style="background:#D3D1C7" title="Abu-abu"></div>
+        <div class="b-color-opt" data-color="#F0997B" style="background:#F0997B" title="Oranye"></div>
+        <div class="b-color-opt" data-color="#E8D5F5" style="background:#E8D5F5" title="Ungu Muda"></div>
+        <div class="b-color-opt" data-color="#FFE4E4" style="background:#FFE4E4" title="Pink Muda"></div>
+        <div class="b-color-opt" data-color="#D4EAF7" style="background:#D4EAF7" title="Biru Pucat"></div>
       </div>
       <div style="margin-top:12px;display:flex;align-items:center;gap:10px">
         <label class="form-label" style="margin:0;white-space:nowrap">Warna Kustom:</label>
@@ -429,13 +330,12 @@
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeBuildingColorModal()">Batal</button>
-      <!-- ✅ FIX: Tombol Simpan Warna saja yang benar-benar save+close -->
       <button class="btn btn-primary" onclick="saveBuildingColor()">Simpan Warna</button>
     </div>
   </div>
 </div>
 
-<!-- ═══ MODAL EDIT BUILDING (double-click legacy) ═══ -->
+<!-- MODAL EDIT BUILDING (legacy) -->
 <div class="modal-overlay" id="building-modal-overlay" onclick="closeBuildingModal()">
   <div class="modal" onclick="event.stopPropagation()" style="width:340px">
     <h3 class="modal-title">Edit Kotak Layout</h3>
@@ -466,37 +366,18 @@
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════════════════
-   STATE
-═══════════════════════════════════════════════════════════ */
-let plants  = [];
-let spots   = [];
-let BUILDINGS = [];
-let pendingFotoFile = null;
-
-const PLANT_EMOJIS = {
-  'Walisongo':'🌿','Daun Pucuk Merah':'🍂','Lotus':'🌸','Mawar Jambe':'🌴',
-  'Kaki Gajah':'🌳','Canna Lily':'🌺','Pohon Asoka':'🌲','Bunga Mondokaki':'🌼',
-  'Pohon Naga':'🎋','Pohon Hujan':'🌧️','Sambang Darah':'🔴','Lili Semak':'🌻',
-  'Tanaman Puring':'🍃','Palem Lontar':'🌴'
-};
+let plants = [], spots = [], BUILDINGS = [], pendingFotoFile = null;
+const PLANT_EMOJIS = {'Walisongo':'🌿','Daun Pucuk Merah':'🍂','Lotus':'🌸','Mawar Jambe':'🌴','Kaki Gajah':'🌳','Canna Lily':'🌺','Pohon Asoka':'🌲','Bunga Mondokaki':'🌼','Pohon Naga':'🎋','Pohon Hujan':'🌧️','Sambang Darah':'🔴','Lili Semak':'🌻','Tanaman Puring':'🍃','Palem Lontar':'🌴'};
 const PLANT_COLORS = ['#1D9E75','#639922','#0F6E56','#3B6D11','#9FE1CB','#FAC775','#97C459','#D4537E','#5B9CF2','#F2B851','#E05C5C','#B5A4E0','#7FB5A8','#C68A3E'];
 
-/* ═══════════════════════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════════════════════ */
 let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   API HELPERS
-═══════════════════════════════════════════════════════════ */
 async function api(method, url, body) {
   const opts = { method, headers: { 'Content-Type': 'application/json' } };
   if (body) opts.body = JSON.stringify(body);
@@ -512,83 +393,31 @@ async function loadAll() {
   ]);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   PAGE NAV
-═══════════════════════════════════════════════════════════ */
 async function showPage(p) {
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
   document.getElementById('page-' + p).classList.add('active');
   if (p === 'landing') return;
   await loadAll();
   if (p === 'dashboard') renderDashboard();
-  if (p === 'map')       renderMap();
+  if (p === 'map') renderMap();
 }
 
-/* ═══════════════════════════════════════════════════════════
-   DASHBOARD
-═══════════════════════════════════════════════════════════ */
 function renderDashboard() {
   let baik = 0, rawat = 0;
   plants.forEach(p => { if (p.kondisi === 'Baik') baik++; else rawat++; });
-  document.getElementById('stat-jenis').textContent  = plants.length;
+  document.getElementById('stat-jenis').textContent = plants.length;
   document.getElementById('stat-lokasi').textContent = spots.length;
-  document.getElementById('stat-baik').textContent   = baik;
-  document.getElementById('stat-rawat').textContent  = rawat;
-
+  document.getElementById('stat-baik').textContent = baik;
+  document.getElementById('stat-rawat').textContent = rawat;
   const tbl = document.getElementById('plant-table');
-  if (!plants.length) {
-    tbl.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted)">Belum ada data tanaman.</p>';
-    return;
-  }
-  tbl.innerHTML = `
-    <table class="plant-table">
-      <thead><tr>
-        <th>Tanaman</th>
-        <th class="hide-mobile">Famili</th>
-        <th class="hide-mobile">Lokasi</th>
-        <th style="text-align:right">Jumlah</th>
-        <th style="text-align:center">Kondisi</th>
-        <th style="text-align:right">Aksi</th>
-      </tr></thead>
-      <tbody>
-        ${plants.map(p => `
-          <tr>
-            <td>
-              <div style="display:flex;align-items:center;gap:10px">
-                ${p.foto
-                  ? `<img src="${p.foto}" class="plant-photo-thumb" alt="${p.nama}" style="cursor:zoom-in" onclick="openLightbox('${p.foto}')">`
-                  : `<div class="plant-photo-placeholder" style="background:${p.color}20">${PLANT_EMOJIS[p.nama]||'🌿'}</div>`}
-                <div>
-                  <div class="plant-name">${p.nama}</div>
-                  <div class="plant-species">${p.jenis}</div>
-                </div>
-              </div>
-            </td>
-            <td class="hide-mobile" style="color:var(--text-secondary);font-style:italic;font-size:12px">${p.jenis}</td>
-            <td class="hide-mobile" style="color:var(--text-secondary)">${p.lokasi}</td>
-            <td style="text-align:right;font-weight:600">${p.jumlah}</td>
-            <td style="text-align:center">
-              <span class="badge ${p.kondisi==='Baik'?'badge-baik':p.kondisi==='Perlu Perawatan'?'badge-rawat':'badge-kritis'}">${p.kondisi}</span>
-            </td>
-            <td style="text-align:right">
-              <button class="btn" style="font-size:11px;padding:4px 10px" onclick="editPlant(${p.id})">Edit</button>
-              <button class="btn btn-danger" style="font-size:11px;padding:4px 10px;margin-left:4px" onclick="deletePlant(${p.id},'${p.nama}')">Hapus</button>
-            </td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>`;
+  if (!plants.length) { tbl.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted)">Belum ada data tanaman.</p>'; return; }
+  tbl.innerHTML = `<table class="plant-table"><thead><tr><th>Tanaman</th><th class="hide-mobile">Famili</th><th class="hide-mobile">Lokasi</th><th style="text-align:right">Jumlah</th><th style="text-align:center">Kondisi</th><th style="text-align:right">Aksi</th></tr></thead><tbody>${plants.map(p => `<tr><td><div style="display:flex;align-items:center;gap:10px">${p.foto?`<img src="${p.foto}" class="plant-photo-thumb" alt="${p.nama}" style="cursor:zoom-in" onclick="openLightbox('${p.foto}')">`:`<div class="plant-photo-placeholder" style="background:${p.color}20">${PLANT_EMOJIS[p.nama]||'🌿'}</div>`}<div><div class="plant-name">${p.nama}</div><div class="plant-species">${p.jenis}</div></div></div></td><td class="hide-mobile" style="color:var(--text-secondary);font-style:italic;font-size:12px">${p.jenis}</td><td class="hide-mobile" style="color:var(--text-secondary)">${p.lokasi}</td><td style="text-align:right;font-weight:600">${p.jumlah}</td><td style="text-align:center"><span class="badge ${p.kondisi==='Baik'?'badge-baik':p.kondisi==='Perlu Perawatan'?'badge-rawat':'badge-kritis'}">${p.kondisi}</span></td><td style="text-align:right"><button class="btn" style="font-size:11px;padding:4px 10px" onclick="editPlant(${p.id})">Edit</button><button class="btn btn-danger" style="font-size:11px;padding:4px 10px;margin-left:4px" onclick="deletePlant(${p.id},'${p.nama}')">Hapus</button></td></tr>`).join('')}</tbody></table>`;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   MAP
-═══════════════════════════════════════════════════════════ */
-let mapEditMode = false;
-let selectedSpotIdx = -1;
-let draggingSpotIdx = -1;
-let dragOffsetX = 0, dragOffsetY = 0;
-let addingSpot = false;
-let editingSpotId = null;
+let mapEditMode=false, selectedSpotIdx=-1, draggingSpotIdx=-1, dragOffsetX=0, dragOffsetY=0, addingSpot=false, editingSpotId=null;
+let layoutEditMode=false, selectedBuildingIdx=-1, draggingBuildingIdx=-1, resizingBuildingIdx=-1, resizeHandle=null;
+let bDragOffsetX=0, bDragOffsetY=0, bResizeStartX=0, bResizeStartY=0, bResizeOrigW=0, bResizeOrigH=0;
+let editingBuildingIdx=-1, selectedBuildingColor='#B5D4F4', pendingBuildingColor='#B5D4F4';
 
 function getSvgCoords(e) {
   const svg = document.getElementById('factory-map');
@@ -602,52 +431,37 @@ function getSvgCoords(e) {
 
 function renderMap() {
   const svg = document.getElementById('factory-map');
-  let c = '';
-
-  c += `<defs>`;
-  spots.forEach((s, i) => {
-    c += `<clipPath id="spot-clip-${i}"><circle cx="${s.x}" cy="${s.y}" r="14"/></clipPath>`;
-  });
-  c += `</defs>`;
-
+  let c = '<defs>';
+  spots.forEach((s, i) => { c += `<clipPath id="spot-clip-${i}"><circle cx="${s.x}" cy="${s.y}" r="14"/></clipPath>`; });
+  c += '</defs>';
   BUILDINGS.forEach((b, bi) => {
-    const cx = b.x + b.w/2, cy = b.y + b.h/2;
-    const rot = b.rotate || 0;
+    const cx = b.x+b.w/2, cy = b.y+b.h/2, rot = b.rotate||0;
     const transform = rot ? `transform="rotate(${rot} ${cx} ${cy})"` : '';
-    const isSelB = layoutEditMode && selectedBuildingIdx === bi;
+    const isSelB = layoutEditMode && selectedBuildingIdx===bi;
     c += `<g data-building="${bi}" style="cursor:${layoutEditMode?'move':'default'}">`;
     c += `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="${b.color}" stroke="${isSelB?'#1D9E75':'#aaa'}" stroke-width="${isSelB?2.5:0.5}" rx="4" ${transform}/>`;
-    if (b.label) {
-      c += `<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="9" fill="#333" font-family="DM Sans,sans-serif" ${transform}>${b.label}</text>`;
-    }
+    if (b.label) c += `<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="9" fill="#333" font-family="DM Sans,sans-serif" ${transform}>${b.label}</text>`;
     if (isSelB) {
       c += `<rect x="${b.x+b.w-8}" y="${b.y+b.h-8}" width="10" height="10" fill="#1D9E75" rx="2" data-resize="${bi}" style="cursor:se-resize"/>`;
       c += `<circle cx="${cx}" cy="${b.y-10}" r="6" fill="#FAC775" stroke="#854F0B" stroke-width="1" data-rotate-handle="${bi}" style="cursor:grab"/>`;
       c += `<line x1="${cx}" y1="${b.y}" x2="${cx}" y2="${b.y-10}" stroke="#854F0B" stroke-width="1"/>`;
     }
-    c += `</g>`;
+    c += '</g>';
   });
-
   c += `<line x1="0" y1="15" x2="860" y2="15" stroke="#888" stroke-width="7"/>`;
   c += `<text x="10" y="13" font-size="8" fill="#555" font-family="DM Sans,sans-serif">Jalan Raya Utama</text>`;
-
   spots.forEach((s, i) => {
     const p = plants.find(pl => pl.id === s.plantId);
     if (!p) return;
-    const isSelected = mapEditMode && selectedSpotIdx === i;
+    const isSelected = mapEditMode && selectedSpotIdx===i;
     c += `<g data-spot="${i}" style="cursor:${mapEditMode?'move':'pointer'}">`;
     c += `<circle cx="${s.x}" cy="${s.y}" r="18" fill="${p.color}" fill-opacity="${mapEditMode?0.7:0.88}" stroke="${isSelected?'#fff':p.color}" stroke-width="${isSelected?3:2}" stroke-dasharray="${isSelected?'4,2':'none'}" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))"/>`;
-    if (p.foto) {
-      c += `<image href="${p.foto}" x="${s.x-14}" y="${s.y-14}" width="28" height="28" clip-path="url(#spot-clip-${i})" style="pointer-events:none"/>`;
-    } else {
-      c += `<text x="${s.x}" y="${s.y+5}" text-anchor="middle" font-size="12" fill="#fff" style="pointer-events:none">${PLANT_EMOJIS[p.nama]||'🌿'}</text>`;
-    }
+    if (p.foto) c += `<image href="${p.foto}" x="${s.x-14}" y="${s.y-14}" width="28" height="28" clip-path="url(#spot-clip-${i})" style="pointer-events:none"/>`;
+    else c += `<text x="${s.x}" y="${s.y+5}" text-anchor="middle" font-size="12" fill="#fff" style="pointer-events:none">${PLANT_EMOJIS[p.nama]||'🌿'}</text>`;
     c += `<text x="${s.x}" y="${s.y+30}" text-anchor="middle" font-size="8" fill="#333" font-family="DM Sans,sans-serif" style="pointer-events:none">${p.nama}</text>`;
-    c += `</g>`;
+    c += '</g>';
   });
-
   svg.innerHTML = c;
-
   svg.querySelectorAll('[data-spot]').forEach(el => {
     const idx = parseInt(el.getAttribute('data-spot'));
     if (mapEditMode) {
@@ -658,20 +472,17 @@ function renderMap() {
       el.addEventListener('click', () => showPlantPopup(idx, spots[idx].x, spots[idx].y));
     }
   });
-
   if (layoutEditMode) {
     svg.querySelectorAll('[data-building]').forEach(el => {
       const bi = parseInt(el.getAttribute('data-building'));
       el.addEventListener('mousedown', e => {
         if (e.target.dataset.resize || e.target.dataset.rotateHandle) return;
         e.preventDefault(); e.stopPropagation();
-        selectedBuildingIdx = bi;
-        draggingBuildingIdx = bi;
+        selectedBuildingIdx = bi; draggingBuildingIdx = bi;
         const coords = getSvgCoords(e);
         bDragOffsetX = coords.x - BUILDINGS[bi].x;
         bDragOffsetY = coords.y - BUILDINGS[bi].y;
-        showBuildingEditBar();
-        renderMap();
+        showBuildingEditBar(); renderMap();
       });
       el.addEventListener('dblclick', e => { e.stopPropagation(); selectedBuildingIdx = bi; openBuildingModal(bi); });
     });
@@ -689,8 +500,7 @@ function renderMap() {
       const bi = parseInt(el.getAttribute('data-rotate-handle'));
       el.addEventListener('mousedown', e => {
         e.preventDefault(); e.stopPropagation();
-        resizeHandle = 'rotate';
-        resizingBuildingIdx = bi;
+        resizeHandle = 'rotate'; resizingBuildingIdx = bi;
         const coords = getSvgCoords(e);
         bResizeStartX = coords.x; bResizeStartY = coords.y;
       });
@@ -698,7 +508,6 @@ function renderMap() {
     svg.addEventListener('mousemove', onBuildingDrag);
     svg.addEventListener('mouseup', endBuildingDrag);
   }
-
   if (mapEditMode) {
     svg.addEventListener('mousemove', onDrag);
     svg.addEventListener('mouseup', endDrag);
@@ -706,20 +515,16 @@ function renderMap() {
     svg.addEventListener('touchend', endDrag);
     svg.addEventListener('click', onMapClick);
   }
-
   const leg = document.getElementById('legend');
   const uniqueIds = [...new Set(spots.map(s => s.plantId))];
   leg.innerHTML = uniqueIds.map(id => {
     const p = plants.find(pl => pl.id === id);
     if (!p) return '';
-    const icon = p.foto
-      ? `<img src="${p.foto}" style="width:16px;height:16px;border-radius:50%;object-fit:cover;flex-shrink:0">`
-      : `<span style="font-size:12px">${PLANT_EMOJIS[p.nama]||'🌿'}</span>`;
+    const icon = p.foto ? `<img src="${p.foto}" style="width:16px;height:16px;border-radius:50%;object-fit:cover;flex-shrink:0">` : `<span style="font-size:12px">${PLANT_EMOJIS[p.nama]||'🌿'}</span>`;
     return `<span class="legend-chip" style="background:${p.color}">${icon} ${p.nama}</span>`;
   }).join('');
 }
 
-/* ── DRAG SPOTS ── */
 function startDrag(e, idx) {
   if (!mapEditMode) return;
   e.preventDefault(); e.stopPropagation();
@@ -751,22 +556,18 @@ function onBuildingDrag(e) {
     const c = getSvgCoords(e);
     if (resizeHandle === 'rotate') {
       const b = BUILDINGS[resizingBuildingIdx];
-      const cx = b.x + b.w/2, cy = b.y + b.h/2;
-      const angle = Math.atan2(c.y - cy, c.x - cx) * 180 / Math.PI + 90;
-      BUILDINGS[resizingBuildingIdx].rotate = Math.round(angle / 5) * 5;
+      const cx = b.x+b.w/2, cy = b.y+b.h/2;
+      const angle = Math.atan2(c.y-cy, c.x-cx)*180/Math.PI+90;
+      BUILDINGS[resizingBuildingIdx].rotate = Math.round(angle/5)*5;
     } else {
-      const dx = c.x - bResizeStartX, dy = c.y - bResizeStartY;
-      BUILDINGS[resizingBuildingIdx].w = Math.max(30, bResizeOrigW + dx);
-      BUILDINGS[resizingBuildingIdx].h = Math.max(20, bResizeOrigH + dy);
+      const dx = c.x-bResizeStartX, dy = c.y-bResizeStartY;
+      BUILDINGS[resizingBuildingIdx].w = Math.max(30, bResizeOrigW+dx);
+      BUILDINGS[resizingBuildingIdx].h = Math.max(20, bResizeOrigH+dy);
     }
     renderMap();
   }
 }
-function endBuildingDrag() {
-  draggingBuildingIdx = -1;
-  resizingBuildingIdx = -1;
-  resizeHandle = null;
-}
+function endBuildingDrag() { draggingBuildingIdx=-1; resizingBuildingIdx=-1; resizeHandle=null; }
 
 function startAddSpot() {
   addingSpot = true;
@@ -775,47 +576,39 @@ function startAddSpot() {
 async function onMapClick(e) {
   if (!addingSpot) return;
   const c = getSvgCoords(e);
-  const newSpot = await api('POST', '/api/spots', { x:c.x, y:c.y, plantId: plants[0]?.id || 1, label:'Titik Baru' });
-  spots.push(newSpot);
-  addingSpot = false;
+  const newSpot = await api('POST', '/api/spots', { x:c.x, y:c.y, plantId: plants[0]?.id||1, label:'Titik Baru' });
+  spots.push(newSpot); addingSpot = false;
   document.getElementById('edit-hint-text').textContent = 'Seret titik untuk memindahkan · Klik ganda untuk edit';
-  renderMap();
-  openSpotModal(spots.length - 1);
+  renderMap(); openSpotModal(spots.length-1);
 }
 async function deleteSelectedSpot() {
   if (selectedSpotIdx < 0) return;
   if (!confirm('Hapus titik ini dari denah?')) return;
-  const spot = spots[selectedSpotIdx];
-  await api('DELETE', `/api/spots/${spot.id}`);
+  await api('DELETE', `/api/spots/${spots[selectedSpotIdx].id}`);
   spots.splice(selectedSpotIdx, 1);
   selectedSpotIdx = -1;
   document.getElementById('btn-del-spot').style.display = 'none';
-  renderMap(); renderDashboard();
-  showToast('Titik dihapus');
+  renderMap(); renderDashboard(); showToast('Titik dihapus');
 }
-
 function toggleMapEdit() {
-  if (mapEditMode) {
-    api('PUT', '/api/spots', spots).then(() => showToast('Posisi denah disimpan ✓'));
-  }
+  if (mapEditMode) api('PUT', '/api/spots', spots).then(() => showToast('Posisi denah disimpan ✓'));
   mapEditMode = !mapEditMode;
-  selectedSpotIdx = -1; draggingSpotIdx = -1; addingSpot = false;
+  selectedSpotIdx=-1; draggingSpotIdx=-1; addingSpot=false;
   const btn = document.getElementById('btn-edit-mode');
   document.getElementById('plant-popup').style.display = 'none';
   if (mapEditMode) {
-    btn.textContent = '✅ Selesai Edit'; btn.classList.add('btn-primary');
-    document.getElementById('btn-add-spot').style.display = '';
-    document.getElementById('btn-del-spot').style.display = 'none';
-    document.getElementById('edit-hint-text').textContent = 'Seret titik untuk memindahkan · Klik ganda untuk edit';
+    btn.textContent='✅ Selesai Edit'; btn.classList.add('btn-primary');
+    document.getElementById('btn-add-spot').style.display='';
+    document.getElementById('btn-del-spot').style.display='none';
+    document.getElementById('edit-hint-text').textContent='Seret titik untuk memindahkan · Klik ganda untuk edit';
   } else {
-    btn.textContent = '✏️ Edit Denah'; btn.classList.remove('btn-primary');
-    document.getElementById('btn-add-spot').style.display = 'none';
-    document.getElementById('btn-del-spot').style.display = 'none';
-    document.getElementById('edit-hint-text').textContent = '';
+    btn.textContent='✏️ Edit Denah'; btn.classList.remove('btn-primary');
+    document.getElementById('btn-add-spot').style.display='none';
+    document.getElementById('btn-del-spot').style.display='none';
+    document.getElementById('edit-hint-text').textContent='';
   }
   renderMap();
 }
-
 function openSpotModal(idx) {
   editingSpotId = spots[idx].id;
   const sel = document.getElementById('spot-plant-select');
@@ -823,54 +616,32 @@ function openSpotModal(idx) {
   document.getElementById('spot-label-input').value = spots[idx].label;
   document.getElementById('spot-modal-overlay').classList.add('open');
 }
-function closeSpotModal() { document.getElementById('spot-modal-overlay').classList.remove('open'); editingSpotId = null; }
+function closeSpotModal() { document.getElementById('spot-modal-overlay').classList.remove('open'); editingSpotId=null; }
 async function saveSpotEdit() {
   if (!editingSpotId) return;
   const plantId = parseInt(document.getElementById('spot-plant-select').value);
-  const label = document.getElementById('spot-label-input').value.trim() || 'Titik';
+  const label = document.getElementById('spot-label-input').value.trim()||'Titik';
   await api('PUT', `/api/spots/${editingSpotId}`, { plantId, label });
-  const idx = spots.findIndex(s => s.id === editingSpotId);
-  if (idx >= 0) { spots[idx].plantId = plantId; spots[idx].label = label; }
-  closeSpotModal(); renderMap(); renderDashboard();
-  showToast('Titik diperbarui ✓');
+  const idx = spots.findIndex(s => s.id===editingSpotId);
+  if (idx>=0) { spots[idx].plantId=plantId; spots[idx].label=label; }
+  closeSpotModal(); renderMap(); renderDashboard(); showToast('Titik diperbarui ✓');
 }
 
-/* ── POPUP ── */
 function showPlantPopup(spotIdx, sx, sy) {
   if (mapEditMode) return;
   const s = spots[spotIdx];
-  const p = plants.find(pl => pl.id === s.plantId);
+  const p = plants.find(pl => pl.id===s.plantId);
   if (!p) return;
   const popup = document.getElementById('plant-popup');
   const svgEl = document.getElementById('factory-map');
-  const scaleX = svgEl.clientWidth / 860;
-  const scaleY = (svgEl.clientHeight || svgEl.clientWidth*(480/860)) / 480;
-  let px = sx*scaleX + 22, py = sy*scaleY - 20;
-  if (px + 240 > svgEl.clientWidth) px = sx*scaleX - 250;
-  if (py < 0) py = sy*scaleY + 24;
-  popup.style.left = px+'px'; popup.style.top = py+'px'; popup.style.display = 'block';
-  const ks = p.kondisi==='Baik' ? 'background:#EAF3DE;color:#3B6D11' : p.kondisi==='Perlu Perawatan' ? 'background:#FAEEDA;color:#854F0B' : 'background:#FCEBEB;color:#A32D2D';
-  popup.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">
-      <div>
-        ${p.foto
-          ? `<img src="${p.foto}" style="width:52px;height:52px;border-radius:8px;object-fit:cover;margin-bottom:6px;display:block;cursor:zoom-in" onclick="openLightbox('${p.foto}')">`
-          : `<div style="font-size:32px;margin-bottom:4px">${PLANT_EMOJIS[p.nama]||'🌿'}</div>`}
-        <p style="font-weight:600;font-size:14px">${p.nama}</p>
-        <p style="font-size:11px;color:var(--text-secondary);font-style:italic">${p.jenis}</p>
-      </div>
-      <button class="popup-close" onclick="document.getElementById('plant-popup').style.display='none'">✕</button>
-    </div>
-    ${p.desc ? `<div style="background:var(--bg-main);border-radius:var(--radius-sm);padding:8px;margin-bottom:10px;font-size:11px;color:var(--text-secondary)">${p.desc}</div>` : ''}
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-      <div style="${ks};border-radius:var(--radius-sm);padding:7px;text-align:center"><p style="font-size:10px;opacity:.7">Kondisi</p><p style="font-size:12px;font-weight:600">${p.kondisi}</p></div>
-      <div style="background:var(--bg-main);border-radius:var(--radius-sm);padding:7px;text-align:center"><p style="font-size:10px;color:var(--text-muted)">Jumlah</p><p style="font-size:12px;font-weight:600">${p.jumlah} pohon</p></div>
-    </div>
-    <p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">📍 ${s.label}</p>
-    <div style="display:flex;gap:6px">
-      <button class="btn" style="font-size:11px;padding:5px 10px;flex:1" onclick="document.getElementById('plant-popup').style.display='none';editPlant(${p.id})">✏️ Edit Data</button>
-      <button class="btn" style="font-size:11px;padding:5px 10px;flex:1" onclick="document.getElementById('plant-popup').style.display='none';openSpotModal(${spotIdx})">📍 Edit Titik</button>
-    </div>`;
+  const scaleX = svgEl.clientWidth/860;
+  const scaleY = (svgEl.clientHeight||svgEl.clientWidth*(480/860))/480;
+  let px = sx*scaleX+22, py = sy*scaleY-20;
+  if (px+240>svgEl.clientWidth) px=sx*scaleX-250;
+  if (py<0) py=sy*scaleY+24;
+  popup.style.left=px+'px'; popup.style.top=py+'px'; popup.style.display='block';
+  const ks = p.kondisi==='Baik'?'background:#EAF3DE;color:#3B6D11':p.kondisi==='Perlu Perawatan'?'background:#FAEEDA;color:#854F0B':'background:#FCEBEB;color:#A32D2D';
+  popup.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px"><div>${p.foto?`<img src="${p.foto}" style="width:52px;height:52px;border-radius:8px;object-fit:cover;margin-bottom:6px;display:block;cursor:zoom-in" onclick="openLightbox('${p.foto}')">`:`<div style="font-size:32px;margin-bottom:4px">${PLANT_EMOJIS[p.nama]||'🌿'}</div>`}<p style="font-weight:600;font-size:14px">${p.nama}</p><p style="font-size:11px;color:var(--text-secondary);font-style:italic">${p.jenis}</p></div><button class="popup-close" onclick="document.getElementById('plant-popup').style.display='none'">✕</button></div>${p.desc?`<div style="background:var(--bg-main);border-radius:var(--radius-sm);padding:8px;margin-bottom:10px;font-size:11px;color:var(--text-secondary)">${p.desc}</div>`:''}<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px"><div style="${ks};border-radius:var(--radius-sm);padding:7px;text-align:center"><p style="font-size:10px;opacity:.7">Kondisi</p><p style="font-size:12px;font-weight:600">${p.kondisi}</p></div><div style="background:var(--bg-main);border-radius:var(--radius-sm);padding:7px;text-align:center"><p style="font-size:10px;color:var(--text-muted)">Jumlah</p><p style="font-size:12px;font-weight:600">${p.jumlah} pohon</p></div></div><p style="font-size:11px;color:var(--text-muted);margin-bottom:10px">📍 ${s.label}</p><div style="display:flex;gap:6px"><button class="btn" style="font-size:11px;padding:5px 10px;flex:1" onclick="document.getElementById('plant-popup').style.display='none';editPlant(${p.id})">✏️ Edit Data</button><button class="btn" style="font-size:11px;padding:5px 10px;flex:1" onclick="document.getElementById('plant-popup').style.display='none';openSpotModal(${spotIdx})">📍 Edit Titik</button></div>`;
 }
 document.addEventListener('click', e => {
   const popup = document.getElementById('plant-popup');
@@ -878,72 +649,53 @@ document.addEventListener('click', e => {
     popup.style.display='none';
 });
 
-/* ═══════════════════════════════════════════════════════════
-   FOTO UPLOAD
-═══════════════════════════════════════════════════════════ */
 function handlePhotoUpload(e) {
   const file = e.target.files[0];
   if (!file) return;
   pendingFotoFile = file;
   const reader = new FileReader();
   reader.onload = ev => {
-    const prev = document.getElementById('photo-preview');
-    prev.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover">`;
-    document.getElementById('btn-remove-photo').style.display = '';
+    document.getElementById('photo-preview').innerHTML=`<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover">`;
+    document.getElementById('btn-remove-photo').style.display='';
   };
   reader.readAsDataURL(file);
 }
-
 function removePhoto() {
-  pendingFotoFile = null;
-  // ✅ FIX: Clear existing foto juga
-  document.getElementById('m-existing-foto').value = '';
-  document.getElementById('photo-preview').innerHTML = `<div class="photo-placeholder"><span>📷</span>Klik untuk upload foto</div>`;
-  document.getElementById('btn-remove-photo').style.display = 'none';
-  document.getElementById('m-foto-input').value = '';
+  pendingFotoFile=null;
+  document.getElementById('m-existing-foto').value='';
+  document.getElementById('photo-preview').innerHTML='<div class="photo-placeholder"><span>📷</span>Klik untuk upload foto</div>';
+  document.getElementById('btn-remove-photo').style.display='none';
+  document.getElementById('m-foto-input').value='';
 }
 
-/* ═══════════════════════════════════════════════════════════
-   MODAL TANAMAN
-═══════════════════════════════════════════════════════════ */
 function openAddModal() {
-  document.getElementById('modal-title').textContent = 'Tambah Tanaman';
+  document.getElementById('modal-title').textContent='Tambah Tanaman';
   ['m-nama','m-jenis','m-lokasi','m-desc'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('m-jumlah').value = '';
-  document.getElementById('m-kondisi').value = 'Baik';
-  document.getElementById('m-edit-id').value = '';
-  // ✅ FIX: Clear existing foto
-  document.getElementById('m-existing-foto').value = '';
-  pendingFotoFile = null;
-  removePhoto();
+  document.getElementById('m-jumlah').value='';
+  document.getElementById('m-kondisi').value='Baik';
+  document.getElementById('m-edit-id').value='';
+  document.getElementById('m-existing-foto').value='';
+  pendingFotoFile=null; removePhoto();
   document.getElementById('modal-overlay').classList.add('open');
 }
-
 function editPlant(id) {
-  const p = plants.find(pl => pl.id === id);
+  const p = plants.find(pl => pl.id===id);
   if (!p) return;
-  document.getElementById('modal-title').textContent = 'Edit Tanaman';
-  document.getElementById('m-nama').value    = p.nama;
-  document.getElementById('m-jenis').value   = p.jenis;
-  document.getElementById('m-lokasi').value  = p.lokasi;
-  document.getElementById('m-jumlah').value  = p.jumlah;
-  document.getElementById('m-kondisi').value = p.kondisi;
-  document.getElementById('m-desc').value    = p.desc || '';
-  document.getElementById('m-edit-id').value = id;
-  // ✅ FIX: Simpan URL foto lama di hidden field
-  document.getElementById('m-existing-foto').value = p.foto || '';
-  pendingFotoFile = null;
-  const prev = document.getElementById('photo-preview');
-  if (p.foto) {
-    prev.innerHTML = `<img src="${p.foto}" style="width:100%;height:100%;object-fit:cover">`;
-    document.getElementById('btn-remove-photo').style.display = '';
-  } else {
-    prev.innerHTML = `<div class="photo-placeholder"><span>📷</span>Klik untuk upload foto</div>`;
-    document.getElementById('btn-remove-photo').style.display = 'none';
-  }
+  document.getElementById('modal-title').textContent='Edit Tanaman';
+  document.getElementById('m-nama').value=p.nama;
+  document.getElementById('m-jenis').value=p.jenis;
+  document.getElementById('m-lokasi').value=p.lokasi;
+  document.getElementById('m-jumlah').value=p.jumlah;
+  document.getElementById('m-kondisi').value=p.kondisi;
+  document.getElementById('m-desc').value=p.desc||'';
+  document.getElementById('m-edit-id').value=id;
+  document.getElementById('m-existing-foto').value=p.foto||'';
+  pendingFotoFile=null;
+  const prev=document.getElementById('photo-preview');
+  if (p.foto) { prev.innerHTML=`<img src="${p.foto}" style="width:100%;height:100%;object-fit:cover">`; document.getElementById('btn-remove-photo').style.display=''; }
+  else { prev.innerHTML='<div class="photo-placeholder"><span>📷</span>Klik untuk upload foto</div>'; document.getElementById('btn-remove-photo').style.display='none'; }
   document.getElementById('modal-overlay').classList.add('open');
 }
-
 function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
 function handleOverlayClick(e) { if (e.target===document.getElementById('modal-overlay')) closeModal(); }
 
@@ -952,282 +704,191 @@ async function saveModal() {
   if (!nama) { document.getElementById('m-nama').focus(); return; }
   const editId = document.getElementById('m-edit-id').value;
   const btn = document.getElementById('btn-save-modal');
-  btn.disabled = true; btn.textContent = 'Menyimpan...';
-
+  btn.disabled=true; btn.textContent='Menyimpan...';
   const takenColors = plants.map(p => p.color);
-  const freeColor = PLANT_COLORS.find(c => !takenColors.includes(c)) || PLANT_COLORS[Math.floor(Math.random()*PLANT_COLORS.length)];
-
-  // ✅ FIX: Gunakan hidden field untuk foto lama, bukan cek DOM
-  const existingFoto = document.getElementById('m-existing-foto').value || '';
-
-  const body = {
-    nama,
-    jenis: document.getElementById('m-jenis').value.trim(),
-    lokasi: document.getElementById('m-lokasi').value.trim(),
-    jumlah: parseInt(document.getElementById('m-jumlah').value) || 0,
-    kondisi: document.getElementById('m-kondisi').value,
-    desc: document.getElementById('m-desc').value.trim(),
-    color: editId ? (plants.find(p=>p.id==editId)?.color || freeColor) : freeColor,
-    foto: existingFoto  // ✅ pakai foto lama, bukan ''
-  };
-
+  const freeColor = PLANT_COLORS.find(c => !takenColors.includes(c))||PLANT_COLORS[Math.floor(Math.random()*PLANT_COLORS.length)];
+  const existingFoto = document.getElementById('m-existing-foto').value||'';
+  const body = { nama, jenis:document.getElementById('m-jenis').value.trim(), lokasi:document.getElementById('m-lokasi').value.trim(), jumlah:parseInt(document.getElementById('m-jumlah').value)||0, kondisi:document.getElementById('m-kondisi').value, desc:document.getElementById('m-desc').value.trim(), color:editId?(plants.find(p=>p.id==editId)?.color||freeColor):freeColor, foto:existingFoto };
   let savedPlant;
   if (editId) {
     savedPlant = await api('PUT', `/api/plants/${editId}`, body);
-    const idx = plants.findIndex(p => p.id == editId);
-    if (idx >= 0) plants[idx] = savedPlant;
+    const idx = plants.findIndex(p => p.id==editId);
+    if (idx>=0) plants[idx]=savedPlant;
   } else {
     savedPlant = await api('POST', '/api/plants', body);
     plants.push(savedPlant);
   }
-
-  // Upload foto jika ada file baru
   if (pendingFotoFile) {
     const fd = new FormData();
     fd.append('foto', pendingFotoFile);
     const r = await fetch(`/api/plants/${savedPlant.id}/foto`, { method:'POST', body:fd });
     const result = await r.json();
-    savedPlant.foto = result.foto;
-    const idx = plants.findIndex(p => p.id === savedPlant.id);
-    if (idx >= 0) plants[idx].foto = result.foto;
+    savedPlant.foto=result.foto;
+    const idx=plants.findIndex(p=>p.id===savedPlant.id);
+    if (idx>=0) plants[idx].foto=result.foto;
   }
-
-  btn.disabled = false; btn.textContent = 'Simpan';
-  closeModal();
-  renderDashboard();
+  btn.disabled=false; btn.textContent='Simpan';
+  closeModal(); renderDashboard();
   if (document.getElementById('page-map').classList.contains('active')) renderMap();
-  showToast(editId ? 'Data diperbarui ✓' : 'Tanaman ditambahkan ✓');
+  showToast(editId?'Data diperbarui ✓':'Tanaman ditambahkan ✓');
 }
-
 async function deletePlant(id, nama) {
   if (!confirm(`Hapus "${nama}" dari daftar?`)) return;
   await api('DELETE', `/api/plants/${id}`);
-  plants = plants.filter(p => p.id !== id);
-  spots  = spots.filter(s => s.plantId !== id);
-  renderDashboard();
-  showToast('Tanaman dihapus');
+  plants=plants.filter(p=>p.id!==id);
+  spots=spots.filter(s=>s.plantId!==id);
+  renderDashboard(); showToast('Tanaman dihapus');
 }
 
-/* ═══════════════════════════════════════════════════════════
-   LIGHTBOX
-═══════════════════════════════════════════════════════════ */
-function openLightbox(src) {
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox').classList.add('show');
-}
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('show');
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-
-/* ═══════════════════════════════════════════════════════════
-   LAYOUT EDITOR
-═══════════════════════════════════════════════════════════ */
-let layoutEditMode = false;
-let selectedBuildingIdx = -1;
-let draggingBuildingIdx = -1;
-let resizingBuildingIdx = -1;
-let resizeHandle = null;
-let bDragOffsetX = 0, bDragOffsetY = 0;
-let bResizeStartX = 0, bResizeStartY = 0, bResizeOrigW = 0, bResizeOrigH = 0;
-let editingBuildingIdx = -1;
-let selectedBuildingColor = '#B5D4F4';
+function openLightbox(src) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').classList.add('show'); }
+function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); }
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeLightbox(); });
 
 function toggleLayoutEdit() {
-  layoutEditMode = !layoutEditMode;
-  const bar = document.getElementById('layout-edit-bar');
-  const btn = document.getElementById('btn-edit-layout');
+  layoutEditMode=!layoutEditMode;
+  const bar=document.getElementById('layout-edit-bar');
+  const btn=document.getElementById('btn-edit-layout');
   if (layoutEditMode) {
-    bar.style.display = 'flex';
-    btn.textContent = '✅ Selesai Layout';
-    btn.classList.add('btn-primary');
+    bar.style.display='flex'; btn.textContent='✅ Selesai Layout'; btn.classList.add('btn-primary');
     if (mapEditMode) toggleMapEdit();
   } else {
-    bar.style.display = 'none';
-    btn.textContent = '🏗️ Edit Layout';
-    btn.classList.remove('btn-primary');
-    selectedBuildingIdx = -1;
-    document.getElementById('btn-del-building').style.display = 'none';
-    document.getElementById('btn-dup-building').style.display = 'none';
-    document.getElementById('btn-edit-building-name').style.display = 'none';
-    document.getElementById('btn-edit-building-color').style.display = 'none';
+    bar.style.display='none'; btn.textContent='🏗️ Edit Layout'; btn.classList.remove('btn-primary');
+    selectedBuildingIdx=-1;
+    ['btn-del-building','btn-dup-building','btn-edit-building-name','btn-edit-building-color'].forEach(id => document.getElementById(id).style.display='none');
   }
   renderMap();
 }
-
 async function saveLayout() {
-  await fetch('/api/buildings', {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(BUILDINGS)
-  });
-  toggleLayoutEdit();
-  showToast('Layout berhasil disimpan ✓');
+  await fetch('/api/buildings', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(BUILDINGS) });
+  toggleLayoutEdit(); showToast('Layout berhasil disimpan ✓');
 }
-
 function addBuilding() {
-  BUILDINGS.push({ x: 100, y: 150, w: 120, h: 70, label: 'Baru', color: '#C0DD97', rotate: 0 });
-  selectedBuildingIdx = BUILDINGS.length - 1;
-  renderMap();
-  showBuildingEditBar();
+  BUILDINGS.push({ x:100, y:150, w:120, h:70, label:'Baru', color:'#C0DD97', rotate:0 });
+  selectedBuildingIdx=BUILDINGS.length-1; renderMap(); showBuildingEditBar();
 }
-
 function deleteBuilding() {
-  if (selectedBuildingIdx < 0) return;
+  if (selectedBuildingIdx<0) return;
   if (!confirm('Hapus kotak ini dari layout?')) return;
   BUILDINGS.splice(selectedBuildingIdx, 1);
-  selectedBuildingIdx = -1;
-  document.getElementById('btn-del-building').style.display = 'none';
-  document.getElementById('btn-dup-building').style.display = 'none';
-  document.getElementById('btn-edit-building-name').style.display = 'none';
-  document.getElementById('btn-edit-building-color').style.display = 'none';
-  document.getElementById('layout-selected-info').textContent = 'Klik kotak untuk pilih · Seret untuk geser · Pojok untuk ubah ukuran';
+  selectedBuildingIdx=-1;
+  ['btn-del-building','btn-dup-building','btn-edit-building-name','btn-edit-building-color'].forEach(id => document.getElementById(id).style.display='none');
+  document.getElementById('layout-selected-info').textContent='Klik kotak untuk pilih · Seret untuk geser · Pojok untuk ubah ukuran';
   renderMap();
 }
-
 function duplicateBuilding() {
-  if (selectedBuildingIdx < 0) return;
-  const orig = BUILDINGS[selectedBuildingIdx];
-  BUILDINGS.push({ ...orig, x: orig.x + 20, y: orig.y + 20 });
-  selectedBuildingIdx = BUILDINGS.length - 1;
-  renderMap();
-  showBuildingEditBar();
+  if (selectedBuildingIdx<0) return;
+  const orig=BUILDINGS[selectedBuildingIdx];
+  BUILDINGS.push({...orig, x:orig.x+20, y:orig.y+20});
+  selectedBuildingIdx=BUILDINGS.length-1; renderMap(); showBuildingEditBar();
 }
-
 function showBuildingEditBar() {
-  document.getElementById('btn-del-building').style.display = '';
-  document.getElementById('btn-dup-building').style.display = '';
-  document.getElementById('btn-edit-building-name').style.display = '';
-  document.getElementById('btn-edit-building-color').style.display = '';
-  const b = BUILDINGS[selectedBuildingIdx];
-  document.getElementById('btn-color-preview').style.background = b.color;
-  document.getElementById('layout-selected-info').textContent = `✔ Dipilih: "${b.label||'(tanpa nama)'}"`;
+  ['btn-del-building','btn-dup-building','btn-edit-building-name','btn-edit-building-color'].forEach(id => document.getElementById(id).style.display='');
+  const b=BUILDINGS[selectedBuildingIdx];
+  document.getElementById('btn-color-preview').style.background=b.color;
+  document.getElementById('layout-selected-info').textContent=`✔ Dipilih: "${b.label||'(tanpa nama)'}"`;
 }
 
-/* ── MODAL EDIT NAMA ── */
 function openBuildingNameModal() {
-  if (selectedBuildingIdx < 0) return;
-  document.getElementById('bn-label-input').value = BUILDINGS[selectedBuildingIdx].label || '';
+  if (selectedBuildingIdx<0) return;
+  document.getElementById('bn-label-input').value=BUILDINGS[selectedBuildingIdx].label||'';
   document.getElementById('building-name-modal').classList.add('open');
 }
-function closeBuildingNameModal() {
-  document.getElementById('building-name-modal').classList.remove('open');
-}
+function closeBuildingNameModal() { document.getElementById('building-name-modal').classList.remove('open'); }
 async function saveBuildingName() {
-  if (selectedBuildingIdx < 0) return;
-  const newLabel = document.getElementById('bn-label-input').value.trim();
-  BUILDINGS[selectedBuildingIdx].label = newLabel;
-  closeBuildingNameModal();
-  renderMap();
-  showBuildingEditBar();
+  if (selectedBuildingIdx<0) return;
+  BUILDINGS[selectedBuildingIdx].label=document.getElementById('bn-label-input').value.trim();
+  closeBuildingNameModal(); renderMap(); showBuildingEditBar();
   await fetch('/api/buildings', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(BUILDINGS) });
   showToast('Nama disimpan ✓');
 }
 
-/* ── MODAL UBAH WARNA ── */
-// ✅ FIX: pendingBuildingColor hanya diupdate saat klik, TIDAK auto-save saat klik swatch
-let pendingBuildingColor = '#B5D4F4';
-
+function updateBcPreview(color) {
+  document.getElementById('bc-color-preview-box').style.background=color;
+  document.getElementById('bc-color-preview-label').textContent=color.toUpperCase();
+}
 function openBuildingColorModal() {
-  if (selectedBuildingIdx < 0) return;
-  pendingBuildingColor = BUILDINGS[selectedBuildingIdx].color;
+  if (selectedBuildingIdx<0) return;
+  pendingBuildingColor=BUILDINGS[selectedBuildingIdx].color;
   updateBcPreview(pendingBuildingColor);
-  document.getElementById('bc-custom-color').value = pendingBuildingColor;
+  document.getElementById('bc-custom-color').value=pendingBuildingColor;
   document.querySelectorAll('#bc-color-picker .b-color-opt').forEach(el => {
-    el.style.border = el.dataset.color === pendingBuildingColor ? '3px solid #333' : '2px solid transparent';
+    el.style.border=el.dataset.color===pendingBuildingColor?'3px solid #333':'2px solid transparent';
   });
   document.getElementById('building-color-modal').classList.add('open');
 }
-function closeBuildingColorModal() {
-  document.getElementById('building-color-modal').classList.remove('open');
-}
-function updateBcPreview(color) {
-  document.getElementById('bc-color-preview-box').style.background = color;
-  document.getElementById('bc-color-preview-label').textContent = color.toUpperCase();
-}
-// ✅ FIX: saveBuildingColor hanya dipanggil dari tombol "Simpan Warna", bukan dari klik swatch
+function closeBuildingColorModal() { document.getElementById('building-color-modal').classList.remove('open'); }
 async function saveBuildingColor() {
-  if (selectedBuildingIdx < 0) return;
-  BUILDINGS[selectedBuildingIdx].color = pendingBuildingColor;
-  document.getElementById('btn-color-preview').style.background = pendingBuildingColor;
-  closeBuildingColorModal();
-  renderMap();
-  showBuildingEditBar();
+  if (selectedBuildingIdx<0) return;
+  BUILDINGS[selectedBuildingIdx].color=pendingBuildingColor;
+  document.getElementById('btn-color-preview').style.background=pendingBuildingColor;
+  closeBuildingColorModal(); renderMap(); showBuildingEditBar();
   await fetch('/api/buildings', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(BUILDINGS) });
   showToast('Warna disimpan ✓');
 }
 
-// ✅ FIX: Klik swatch hanya UPDATE preview, tidak auto-save
 document.addEventListener('click', e => {
+  // Klik swatch warna building
   const opt = e.target.closest('#bc-color-picker .b-color-opt');
   if (opt) {
     e.stopPropagation();
-    pendingBuildingColor = opt.dataset.color;
+    pendingBuildingColor=opt.dataset.color;
     updateBcPreview(pendingBuildingColor);
-    document.getElementById('bc-custom-color').value = pendingBuildingColor;
+    document.getElementById('bc-custom-color').value=pendingBuildingColor;
     document.querySelectorAll('#bc-color-picker .b-color-opt').forEach(el => {
-      el.style.border = el.dataset.color === pendingBuildingColor ? '3px solid #333' : '2px solid transparent';
+      el.style.border=el.dataset.color===pendingBuildingColor?'3px solid #333':'2px solid transparent';
     });
-    // Preview real-time: langsung terapkan warna ke kotak terpilih
-    if (selectedBuildingIdx >= 0) {
-      BUILDINGS[selectedBuildingIdx].color = pendingBuildingColor;
-      document.getElementById('btn-color-preview').style.background = pendingBuildingColor;
-      renderMap();
-      showBuildingEditBar();
+    // Langsung preview real-time ke kotak terpilih
+    if (selectedBuildingIdx>=0) {
+      BUILDINGS[selectedBuildingIdx].color=pendingBuildingColor;
+      document.getElementById('btn-color-preview').style.background=pendingBuildingColor;
+      renderMap(); showBuildingEditBar();
     }
+    return;
+  }
+  // Klik swatch warna legacy modal
   const opt2 = e.target.closest('#b-color-picker .b-color-opt');
   if (opt2) {
     e.stopPropagation();
-    selectedBuildingColor = opt2.dataset.color;
+    selectedBuildingColor=opt2.dataset.color;
     document.querySelectorAll('#b-color-picker .b-color-opt').forEach(el => {
-      el.style.border = el.dataset.color === selectedBuildingColor ? '2px solid #333' : '2px solid transparent';
+      el.style.border=el.dataset.color===selectedBuildingColor?'2px solid #333':'2px solid transparent';
     });
   }
 });
 
 document.getElementById('bc-custom-color').addEventListener('input', e => {
-  pendingBuildingColor = e.target.value;
+  pendingBuildingColor=e.target.value;
   updateBcPreview(pendingBuildingColor);
-  document.querySelectorAll('#bc-color-picker .b-color-opt').forEach(el => {
-    el.style.border = '2px solid transparent';
-  });
+  document.querySelectorAll('#bc-color-picker .b-color-opt').forEach(el => { el.style.border='2px solid transparent'; });
 });
 
-/* ── LEGACY BUILDING MODAL ── */
 function openBuildingModal(idx) {
-  editingBuildingIdx = idx;
-  const b = BUILDINGS[idx];
-  document.getElementById('b-label-input').value = b.label || '';
-  document.getElementById('b-rotate-input').value = b.rotate || 0;
-  document.getElementById('b-w-input').value = b.w;
-  document.getElementById('b-h-input').value = b.h;
-  selectedBuildingColor = b.color;
+  editingBuildingIdx=idx;
+  const b=BUILDINGS[idx];
+  document.getElementById('b-label-input').value=b.label||'';
+  document.getElementById('b-rotate-input').value=b.rotate||0;
+  document.getElementById('b-w-input').value=b.w;
+  document.getElementById('b-h-input').value=b.h;
+  selectedBuildingColor=b.color;
   document.querySelectorAll('#b-color-picker .b-color-opt').forEach(el => {
-    el.style.border = el.dataset.color === b.color ? '2px solid #333' : '2px solid transparent';
+    el.style.border=el.dataset.color===b.color?'2px solid #333':'2px solid transparent';
   });
   document.getElementById('building-modal-overlay').classList.add('open');
 }
-function closeBuildingModal() {
-  document.getElementById('building-modal-overlay').classList.remove('open');
-  editingBuildingIdx = -1;
-}
+function closeBuildingModal() { document.getElementById('building-modal-overlay').classList.remove('open'); editingBuildingIdx=-1; }
 async function saveBuildingEdit() {
-  if (editingBuildingIdx < 0) return;
-  BUILDINGS[editingBuildingIdx].label  = document.getElementById('b-label-input').value.trim();
-  BUILDINGS[editingBuildingIdx].rotate = parseInt(document.getElementById('b-rotate-input').value) || 0;
-  BUILDINGS[editingBuildingIdx].w      = Math.max(30, parseInt(document.getElementById('b-w-input').value) || 120);
-  BUILDINGS[editingBuildingIdx].h      = Math.max(20, parseInt(document.getElementById('b-h-input').value) || 70);
-  BUILDINGS[editingBuildingIdx].color  = selectedBuildingColor;
-  closeBuildingModal();
-  renderMap();
+  if (editingBuildingIdx<0) return;
+  BUILDINGS[editingBuildingIdx].label=document.getElementById('b-label-input').value.trim();
+  BUILDINGS[editingBuildingIdx].rotate=parseInt(document.getElementById('b-rotate-input').value)||0;
+  BUILDINGS[editingBuildingIdx].w=Math.max(30, parseInt(document.getElementById('b-w-input').value)||120);
+  BUILDINGS[editingBuildingIdx].h=Math.max(20, parseInt(document.getElementById('b-h-input').value)||70);
+  BUILDINGS[editingBuildingIdx].color=selectedBuildingColor;
+  closeBuildingModal(); renderMap();
   if (layoutEditMode) showBuildingEditBar();
   await fetch('/api/buildings', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(BUILDINGS) });
   showToast('Perubahan disimpan ✓');
 }
 
-/* ═══════════════════════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════════════════════ */
 loadAll().then(renderDashboard);
 </script>
 </body>
