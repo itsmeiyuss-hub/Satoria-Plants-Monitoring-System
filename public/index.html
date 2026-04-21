@@ -44,12 +44,10 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg-main); color: var(--text-primary); min-height: 100vh; line-height: 1.5; }
 
-  /* ── PAGES ── */
   .page { display: none; animation: fadeUp .35s ease both; }
   .page.active { display: block; }
   @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 
-  /* ── TOAST ── */
   #toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
     background: var(--green-900); color: #fff; padding: 10px 20px;
@@ -59,7 +57,6 @@
   }
   #toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* ── NAVBAR ── */
   .nav {
     background: var(--bg-card); border-bottom: 1px solid var(--border-light);
     padding: 0 28px; height: 62px;
@@ -80,7 +77,6 @@
   .nav-btn:hover { background: var(--green-50); color: var(--text-primary); }
   .nav-btn.active { background: var(--green-50); color: var(--green-800); }
 
-  /* ── BUTTONS ── */
   .btn {
     padding: 8px 18px; border-radius: var(--radius-sm); border: 1px solid var(--border);
     background: var(--bg-card); color: var(--text-primary); cursor: pointer;
@@ -94,7 +90,6 @@
   .btn-danger { color: var(--red-400); border-color: #F7C1C1; }
   .btn-danger:hover { background: var(--red-100); }
 
-  /* ── INPUTS ── */
   input, select, textarea {
     width: 100%; padding: 9px 12px; border-radius: var(--radius-sm);
     border: 1px solid var(--border); background: var(--bg-card);
@@ -105,16 +100,13 @@
     border-color: var(--green-700); box-shadow: 0 0 0 3px rgba(29,158,117,.12);
   }
 
-  /* ── BADGES ── */
   .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: .3px; text-transform: uppercase; }
   .badge-baik   { background: var(--green-50);  color: var(--green-800); }
   .badge-rawat  { background: var(--amber-100); color: #854F0B; }
   .badge-kritis { background: var(--red-100);   color: #A32D2D; }
 
-  /* ── CARDS ── */
   .card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
 
-  /* ── STAT CARDS ── */
   .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 24px; }
   .stat-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 16px; box-shadow: var(--shadow-sm); transition: transform .15s, box-shadow .15s; }
   .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
@@ -123,7 +115,6 @@
   .stat-card.green { background: linear-gradient(135deg, var(--green-50), #fff); border-color: var(--green-100); }
   .stat-card.amber { background: linear-gradient(135deg, var(--amber-100), #fff); border-color: #FAE3AF; }
 
-  /* ── TABLE ── */
   .plant-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .plant-table th { text-align: left; padding: 10px 12px; color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--border); background: var(--bg-main); }
   .plant-table td { padding: 12px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
@@ -134,7 +125,6 @@
   .plant-photo-thumb { width: 38px; height: 38px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-light); flex-shrink: 0; }
   .plant-photo-placeholder { width: 38px; height: 38px; border-radius: var(--radius-sm); background: var(--green-50); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
 
-  /* ── HERO ── */
   .hero {
     background: linear-gradient(150deg, var(--green-900) 0%, var(--green-700) 60%, var(--green-600) 100%);
     min-height: 440px; display: flex; flex-direction: column; align-items: center;
@@ -162,19 +152,16 @@
   .feature-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
   .feature-desc { font-size: 12px; color: var(--text-secondary); }
 
-  /* ── CONTENT ── */
   .content { padding: 28px; max-width: 960px; margin: 0 auto; }
   .page-title { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 4px; }
   .page-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; }
 
-  /* ── MAP ── */
   .map-container { position: relative; width: 100%; border-radius: var(--radius-md); background: #d4edda; overflow: hidden; min-height: 480px; }
   #factory-map { width: 100%; height: auto; display: block; }
   .plant-popup { display: none; position: absolute; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; width: 230px; box-shadow: var(--shadow-lg); z-index: 10; }
   .popup-close { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 16px; padding: 0; line-height: 1; transition: color .15s; }
   .popup-close:hover { color: var(--text-primary); }
 
-  /* ── LEGEND SCROLLABLE ── */
   .legend-wrap { margin-top: 14px; display: flex; align-items: center; gap: 8px; }
   .legend-label { font-size: 12px; color: var(--text-secondary); white-space: nowrap; flex-shrink: 0; }
   .legend-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; flex: 1; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
@@ -183,12 +170,10 @@
   .legend-scroll::-webkit-scrollbar-thumb { background: var(--green-200); border-radius: 2px; }
   .legend-chip { display: inline-flex; align-items: center; gap: 5px; color: #fff; padding: 5px 13px; border-radius: 20px; font-size: 11px; font-weight: 500; white-space: nowrap; flex-shrink: 0; scroll-snap-align: start; }
 
-  /* ── MAP EDIT BAR ── */
   .map-edit-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; padding: 10px 14px; background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; }
   .map-edit-bar label { color: var(--text-secondary); font-weight: 500; }
   .edit-hint { font-size: 12px; color: var(--text-muted); }
 
-  /* ── MODAL ── */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,61,42,.45); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--bg-card); border-radius: var(--radius-xl); padding: 28px; width: 400px; max-width: 92vw; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); animation: modalIn .25s ease both; }
@@ -198,19 +183,16 @@
   .form-label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
   .form-group { margin-bottom: 16px; }
 
-  /* ── PHOTO ── */
   .photo-preview { width: 100%; height: 140px; border-radius: var(--radius-sm); border: 2px dashed var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; background: var(--bg-main); transition: border-color .15s; }
   .photo-preview:hover { border-color: var(--green-400); }
   .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
   .photo-placeholder { text-align: center; color: var(--text-muted); font-size: 12px; }
   .photo-placeholder span { font-size: 28px; display: block; margin-bottom: 4px; }
 
-  /* ── LOADING ── */
   .loading { text-align: center; padding: 48px; color: var(--text-muted); font-size: 14px; }
   .spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid var(--green-100); border-top-color: var(--green-700); border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 12px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── RESPONSIVE ── */
   @media (max-width: 640px) {
     .hero h1 { font-size: 26px; }
     .content { padding: 16px; }
@@ -219,18 +201,15 @@
     .plant-table .hide-mobile { display: none; }
   }
 
-  /* ── LIGHTBOX ── */
   #lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:9999; align-items:center; justify-content:center; cursor:zoom-out; }
   #lightbox.show { display:flex; }
   #lightbox img { max-width:90vw; max-height:90vh; object-fit:contain; border-radius:var(--radius-md); box-shadow:0 24px 80px rgba(0,0,0,.6); }
   #lightbox-close { position:absolute; top:20px; right:28px; color:#fff; font-size:32px; cursor:pointer; line-height:1; opacity:.8; transition:opacity .15s; }
   #lightbox-close:hover { opacity:1; }
 
-  /* ── LOGOUT BTN ── */
   .nav-logout { padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--border); background:transparent; cursor:pointer; font-size:13px; font-family:'DM Sans',sans-serif; color:var(--text-secondary); transition:all .15s; font-weight:500; display:flex; align-items:center; gap:5px; }
   .nav-logout:hover { background:var(--red-100); color:var(--red-400); border-color:#F7C1C1; }
 
-  /* ── COLOR SWATCHES ── */
   .b-color-opt { width:26px; height:26px; border-radius:6px; cursor:pointer; border:2px solid transparent; transition: transform .1s; }
   .b-color-opt:hover { transform: scale(1.15); }
 
@@ -241,10 +220,8 @@
 </head>
 <body>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
-<!-- LIGHTBOX -->
 <div id="lightbox" onclick="closeLightbox()">
   <span id="lightbox-close" onclick="closeLightbox()">✕</span>
   <img id="lightbox-img" src="" alt="Foto Tanaman">
@@ -262,7 +239,6 @@
     <p class="hero-desc">Pantau &amp; kelola seluruh tanaman di area pabrik dengan denah interaktif</p>
     <button class="hero-cta" onclick="showPage('dashboard')">Masuk ke Sistem →</button>
   </div>
-
   <div style="padding:40px 20px;max-width:600px;margin:0 auto">
     <p style="text-align:center;color:var(--text-muted);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px">Fitur Utama</p>
     <div class="features-grid">
@@ -272,7 +248,6 @@
       <div class="feature-card"><div class="feature-icon">📷</div><p class="feature-title">Foto Tanaman</p><p class="feature-desc">Upload &amp; simpan foto tiap tanaman</p></div>
     </div>
   </div>
-
   <footer style="text-align:center;padding:24px;color:var(--text-muted);font-size:12px;border-top:1px solid var(--border-light)">
     © 2026 PT Satoria Aneka Industri · PT Satoria Agro Industri · Plant Monitoring System
   </footer>
@@ -288,7 +263,7 @@
     <div class="nav-links">
       <button class="nav-btn active" id="nav-dash" onclick="showPage('dashboard')">Dashboard</button>
       <button class="nav-btn" id="nav-map" onclick="showPage('map')">Denah</button>
-      <button class="nav-logout" onclick="showPage('landing')" title="Keluar ke Halaman Utama">🚪 Keluar</button>
+      <button class="nav-logout" onclick="showPage('landing')">🚪 Keluar</button>
     </div>
   </nav>
   <div class="content">
@@ -320,14 +295,13 @@
     <div class="nav-links">
       <button class="nav-btn" id="nav-dash2" onclick="showPage('dashboard')">Dashboard</button>
       <button class="nav-btn active" id="nav-map2" onclick="showPage('map')">Denah</button>
-      <button class="nav-logout" onclick="showPage('landing')" title="Keluar ke Halaman Utama">🚪 Keluar</button>
+      <button class="nav-logout" onclick="showPage('landing')">🚪 Keluar</button>
     </div>
   </nav>
   <div class="content">
     <h1 class="page-title">Denah Tanaman PT Satoria</h1>
     <p class="page-sub">Tap ikon tanaman untuk melihat detail · Aktifkan mode edit untuk memindahkan atau mengubah titik</p>
 
-    <!-- TOP TOOLBAR -->
     <div class="map-edit-bar">
       <label>Mode:</label>
       <button class="btn" id="btn-edit-mode" onclick="toggleMapEdit()">✏️ Edit Denah</button>
@@ -339,13 +313,11 @@
       </div>
     </div>
 
-    <!-- LAYOUT EDIT BAR -->
     <div id="layout-edit-bar" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:10px 14px;background:#fff8e1;border:1px solid #FAC775;border-radius:var(--radius-sm);font-size:13px">
       <span style="font-weight:600;color:#854F0B">🏗️ Mode Edit Layout:</span>
       <button class="btn" onclick="addBuilding()" style="font-size:12px;padding:5px 10px">+ Tambah Kotak</button>
       <button class="btn btn-danger" id="btn-del-building" onclick="deleteBuilding()" style="display:none;font-size:12px;padding:5px 10px">🗑 Hapus</button>
       <button class="btn" id="btn-dup-building" onclick="duplicateBuilding()" style="display:none;font-size:12px;padding:5px 10px">⧉ Duplikat</button>
-      <!-- NEW: Edit Nama & Warna buttons -->
       <button class="btn" id="btn-edit-building-name" onclick="openBuildingNameModal()" style="display:none;font-size:12px;padding:5px 10px">✏️ Edit Nama</button>
       <button class="btn" id="btn-edit-building-color" onclick="openBuildingColorModal()" style="display:none;font-size:12px;padding:5px 10px;gap:5px"><span id="btn-color-preview" style="width:12px;height:12px;border-radius:3px;background:#B5D4F4;display:inline-block"></span>Ubah Warna</button>
       <span id="layout-selected-info" style="font-size:11px;color:var(--text-muted)">Klik kotak untuk pilih · Seret untuk geser · Pojok untuk ubah ukuran</span>
@@ -359,7 +331,6 @@
       </div>
     </div>
 
-    <!-- LEGEND SCROLLABLE -->
     <div class="legend-wrap">
       <span class="legend-label">Keterangan:</span>
       <div class="legend-scroll" id="legend"></div>
@@ -388,7 +359,9 @@
       <input type="file" id="m-foto-input" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)">
       <button class="btn btn-danger" id="btn-remove-photo" onclick="removePhoto()" style="display:none;margin-top:6px;width:100%;justify-content:center">🗑 Hapus Foto</button>
     </div>
+    <!-- ✅ FIX: hidden fields untuk simpan state foto dan id -->
     <input type="hidden" id="m-edit-id" value="">
+    <input type="hidden" id="m-existing-foto" value="">
     <div class="modal-footer">
       <button class="btn" onclick="closeModal()">Batal</button>
       <button class="btn btn-primary" id="btn-save-modal" onclick="saveModal()">Simpan</button>
@@ -456,6 +429,7 @@
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeBuildingColorModal()">Batal</button>
+      <!-- ✅ FIX: Tombol Simpan Warna saja yang benar-benar save+close -->
       <button class="btn btn-primary" onclick="saveBuildingColor()">Simpan Warna</button>
     </div>
   </div>
@@ -465,7 +439,7 @@
 <div class="modal-overlay" id="building-modal-overlay" onclick="closeBuildingModal()">
   <div class="modal" onclick="event.stopPropagation()" style="width:340px">
     <h3 class="modal-title">Edit Kotak Layout</h3>
-    <div class="form-group"><label class="form-label">Nama Kotak <span style="font-weight:400;color:var(--text-muted)">(boleh kosong)</span></label><input id="b-label-input" type="text" placeholder="e.g. Kantor Utama"></div>
+    <div class="form-group"><label class="form-label">Nama Kotak</label><input id="b-label-input" type="text" placeholder="e.g. Kantor Utama"></div>
     <div class="form-group"><label class="form-label">Warna</label>
       <div style="display:flex;gap:6px;flex-wrap:wrap" id="b-color-picker">
         <div class="b-color-opt" data-color="#B5D4F4" style="background:#B5D4F4"></div>
@@ -582,7 +556,7 @@ function renderDashboard() {
             <td>
               <div style="display:flex;align-items:center;gap:10px">
                 ${p.foto
-                  ? `<img src="${p.foto}" class="plant-photo-thumb" alt="${p.nama}" style="cursor:zoom-in" onclick="openLightbox('${p.foto}')" title="Klik untuk perbesar">`
+                  ? `<img src="${p.foto}" class="plant-photo-thumb" alt="${p.nama}" style="cursor:zoom-in" onclick="openLightbox('${p.foto}')">`
                   : `<div class="plant-photo-placeholder" style="background:${p.color}20">${PLANT_EMOJIS[p.nama]||'🌿'}</div>`}
                 <div>
                   <div class="plant-name">${p.nama}</div>
@@ -626,23 +600,16 @@ function getSvgCoords(e) {
   return { x: Math.round((clientX - rect.left) * scaleX), y: Math.round((clientY - rect.top) * scaleY) };
 }
 
-function getPlantIcon(p) {
-  if (p.foto) return `<image href="${p.foto}" x="0" y="0" width="28" height="28" clip-path="circle(14px at 14px 14px)" style="pointer-events:none"/>`;
-  return `<text x="14" y="19" text-anchor="middle" font-size="13" fill="#fff" style="pointer-events:none">${PLANT_EMOJIS[p.nama]||'🌿'}</text>`;
-}
-
 function renderMap() {
   const svg = document.getElementById('factory-map');
   let c = '';
 
-  // Defs: clipPath untuk foto tanaman bundar
   c += `<defs>`;
   spots.forEach((s, i) => {
     c += `<clipPath id="spot-clip-${i}"><circle cx="${s.x}" cy="${s.y}" r="14"/></clipPath>`;
   });
   c += `</defs>`;
 
-  // Buildings
   BUILDINGS.forEach((b, bi) => {
     const cx = b.x + b.w/2, cy = b.y + b.h/2;
     const rot = b.rotate || 0;
@@ -664,7 +631,6 @@ function renderMap() {
   c += `<line x1="0" y1="15" x2="860" y2="15" stroke="#888" stroke-width="7"/>`;
   c += `<text x="10" y="13" font-size="8" fill="#555" font-family="DM Sans,sans-serif">Jalan Raya Utama</text>`;
 
-  // Spots
   spots.forEach((s, i) => {
     const p = plants.find(pl => pl.id === s.plantId);
     if (!p) return;
@@ -682,7 +648,6 @@ function renderMap() {
 
   svg.innerHTML = c;
 
-  // Spot events
   svg.querySelectorAll('[data-spot]').forEach(el => {
     const idx = parseInt(el.getAttribute('data-spot'));
     if (mapEditMode) {
@@ -694,7 +659,6 @@ function renderMap() {
     }
   });
 
-  // Building layout events
   if (layoutEditMode) {
     svg.querySelectorAll('[data-building]').forEach(el => {
       const bi = parseInt(el.getAttribute('data-building'));
@@ -743,7 +707,6 @@ function renderMap() {
     svg.addEventListener('click', onMapClick);
   }
 
-  // Legend — scrollable chips
   const leg = document.getElementById('legend');
   const uniqueIds = [...new Set(spots.map(s => s.plantId))];
   leg.innerHTML = uniqueIds.map(id => {
@@ -776,7 +739,6 @@ function onDrag(e) {
 }
 function endDrag() { draggingSpotIdx = -1; }
 
-/* ── DRAG BUILDINGS ── */
 function onBuildingDrag(e) {
   if (draggingBuildingIdx >= 0) {
     e.preventDefault();
@@ -806,7 +768,6 @@ function endBuildingDrag() {
   resizeHandle = null;
 }
 
-/* ── ADD SPOT ── */
 function startAddSpot() {
   addingSpot = true;
   document.getElementById('edit-hint-text').textContent = 'Klik di denah untuk menempatkan titik baru';
@@ -893,7 +854,7 @@ function showPlantPopup(spotIdx, sx, sy) {
     <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">
       <div>
         ${p.foto
-          ? `<img src="${p.foto}" style="width:52px;height:52px;border-radius:8px;object-fit:cover;margin-bottom:6px;display:block;cursor:zoom-in" onclick="openLightbox('${p.foto}')" title="Klik untuk perbesar">`
+          ? `<img src="${p.foto}" style="width:52px;height:52px;border-radius:8px;object-fit:cover;margin-bottom:6px;display:block;cursor:zoom-in" onclick="openLightbox('${p.foto}')">`
           : `<div style="font-size:32px;margin-bottom:4px">${PLANT_EMOJIS[p.nama]||'🌿'}</div>`}
         <p style="font-weight:600;font-size:14px">${p.nama}</p>
         <p style="font-size:11px;color:var(--text-secondary);font-style:italic">${p.jenis}</p>
@@ -932,8 +893,11 @@ function handlePhotoUpload(e) {
   };
   reader.readAsDataURL(file);
 }
+
 function removePhoto() {
   pendingFotoFile = null;
+  // ✅ FIX: Clear existing foto juga
+  document.getElementById('m-existing-foto').value = '';
   document.getElementById('photo-preview').innerHTML = `<div class="photo-placeholder"><span>📷</span>Klik untuk upload foto</div>`;
   document.getElementById('btn-remove-photo').style.display = 'none';
   document.getElementById('m-foto-input').value = '';
@@ -948,10 +912,13 @@ function openAddModal() {
   document.getElementById('m-jumlah').value = '';
   document.getElementById('m-kondisi').value = 'Baik';
   document.getElementById('m-edit-id').value = '';
+  // ✅ FIX: Clear existing foto
+  document.getElementById('m-existing-foto').value = '';
   pendingFotoFile = null;
   removePhoto();
   document.getElementById('modal-overlay').classList.add('open');
 }
+
 function editPlant(id) {
   const p = plants.find(pl => pl.id === id);
   if (!p) return;
@@ -963,6 +930,8 @@ function editPlant(id) {
   document.getElementById('m-kondisi').value = p.kondisi;
   document.getElementById('m-desc').value    = p.desc || '';
   document.getElementById('m-edit-id').value = id;
+  // ✅ FIX: Simpan URL foto lama di hidden field
+  document.getElementById('m-existing-foto').value = p.foto || '';
   pendingFotoFile = null;
   const prev = document.getElementById('photo-preview');
   if (p.foto) {
@@ -974,6 +943,7 @@ function editPlant(id) {
   }
   document.getElementById('modal-overlay').classList.add('open');
 }
+
 function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
 function handleOverlayClick(e) { if (e.target===document.getElementById('modal-overlay')) closeModal(); }
 
@@ -987,19 +957,18 @@ async function saveModal() {
   const takenColors = plants.map(p => p.color);
   const freeColor = PLANT_COLORS.find(c => !takenColors.includes(c)) || PLANT_COLORS[Math.floor(Math.random()*PLANT_COLORS.length)];
 
-  // Handle foto removal (if user removed existing foto)
-  let existingFoto = editId ? (plants.find(p=>p.id==editId)?.foto || '') : '';
-  const previewHasImg = document.getElementById('photo-preview').querySelector('img');
-  if (!previewHasImg && !pendingFotoFile) existingFoto = ''; // user cleared photo
+  // ✅ FIX: Gunakan hidden field untuk foto lama, bukan cek DOM
+  const existingFoto = document.getElementById('m-existing-foto').value || '';
 
   const body = {
-    nama, jenis: document.getElementById('m-jenis').value.trim(),
+    nama,
+    jenis: document.getElementById('m-jenis').value.trim(),
     lokasi: document.getElementById('m-lokasi').value.trim(),
     jumlah: parseInt(document.getElementById('m-jumlah').value) || 0,
     kondisi: document.getElementById('m-kondisi').value,
     desc: document.getElementById('m-desc').value.trim(),
-    color: editId ? plants.find(p=>p.id==editId)?.color || freeColor : freeColor,
-    foto: existingFoto
+    color: editId ? (plants.find(p=>p.id==editId)?.color || freeColor) : freeColor,
+    foto: existingFoto  // ✅ pakai foto lama, bukan ''
   };
 
   let savedPlant;
@@ -1049,7 +1018,7 @@ function openLightbox(src) {
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('show');
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLightbox(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
 /* ═══════════════════════════════════════════════════════════
    LAYOUT EDITOR
@@ -1131,7 +1100,6 @@ function showBuildingEditBar() {
   document.getElementById('btn-edit-building-name').style.display = '';
   document.getElementById('btn-edit-building-color').style.display = '';
   const b = BUILDINGS[selectedBuildingIdx];
-  // Update color preview on button
   document.getElementById('btn-color-preview').style.background = b.color;
   document.getElementById('layout-selected-info').textContent = `✔ Dipilih: "${b.label||'(tanpa nama)'}"`;
 }
@@ -1152,12 +1120,12 @@ async function saveBuildingName() {
   closeBuildingNameModal();
   renderMap();
   showBuildingEditBar();
-  // Auto-save
   await fetch('/api/buildings', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(BUILDINGS) });
   showToast('Nama disimpan ✓');
 }
 
 /* ── MODAL UBAH WARNA ── */
+// ✅ FIX: pendingBuildingColor hanya diupdate saat klik, TIDAK auto-save saat klik swatch
 let pendingBuildingColor = '#B5D4F4';
 
 function openBuildingColorModal() {
@@ -1177,6 +1145,7 @@ function updateBcPreview(color) {
   document.getElementById('bc-color-preview-box').style.background = color;
   document.getElementById('bc-color-preview-label').textContent = color.toUpperCase();
 }
+// ✅ FIX: saveBuildingColor hanya dipanggil dari tombol "Simpan Warna", bukan dari klik swatch
 async function saveBuildingColor() {
   if (selectedBuildingIdx < 0) return;
   BUILDINGS[selectedBuildingIdx].color = pendingBuildingColor;
@@ -1184,12 +1153,11 @@ async function saveBuildingColor() {
   closeBuildingColorModal();
   renderMap();
   showBuildingEditBar();
-  // Auto-save
   await fetch('/api/buildings', { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(BUILDINGS) });
   showToast('Warna disimpan ✓');
 }
 
-// Color swatches in color modal — klik langsung apply & simpan
+// ✅ FIX: Klik swatch hanya UPDATE preview, tidak auto-save
 document.addEventListener('click', e => {
   const opt = e.target.closest('#bc-color-picker .b-color-opt');
   if (opt) {
@@ -1200,10 +1168,8 @@ document.addEventListener('click', e => {
     document.querySelectorAll('#bc-color-picker .b-color-opt').forEach(el => {
       el.style.border = el.dataset.color === pendingBuildingColor ? '3px solid #333' : '2px solid transparent';
     });
-    // Langsung apply & simpan saat klik warna
-    saveBuildingColor();
+    // TIDAK memanggil saveBuildingColor() — user harus klik "Simpan Warna"
   }
-  // Legacy modal color picker
   const opt2 = e.target.closest('#b-color-picker .b-color-opt');
   if (opt2) {
     e.stopPropagation();
@@ -1214,7 +1180,6 @@ document.addEventListener('click', e => {
   }
 });
 
-// Custom color picker input
 document.getElementById('bc-custom-color').addEventListener('input', e => {
   pendingBuildingColor = e.target.value;
   updateBcPreview(pendingBuildingColor);
@@ -1223,7 +1188,7 @@ document.getElementById('bc-custom-color').addEventListener('input', e => {
   });
 });
 
-/* ── LEGACY BUILDING MODAL (double-click) ── */
+/* ── LEGACY BUILDING MODAL ── */
 function openBuildingModal(idx) {
   editingBuildingIdx = idx;
   const b = BUILDINGS[idx];
