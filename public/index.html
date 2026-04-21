@@ -1168,8 +1168,13 @@ document.addEventListener('click', e => {
     document.querySelectorAll('#bc-color-picker .b-color-opt').forEach(el => {
       el.style.border = el.dataset.color === pendingBuildingColor ? '3px solid #333' : '2px solid transparent';
     });
-    // TIDAK memanggil saveBuildingColor() — user harus klik "Simpan Warna"
-  }
+    // Preview real-time: langsung terapkan warna ke kotak terpilih
+    if (selectedBuildingIdx >= 0) {
+      BUILDINGS[selectedBuildingIdx].color = pendingBuildingColor;
+      document.getElementById('btn-color-preview').style.background = pendingBuildingColor;
+      renderMap();
+      showBuildingEditBar();
+    }
   const opt2 = e.target.closest('#b-color-picker .b-color-opt');
   if (opt2) {
     e.stopPropagation();
