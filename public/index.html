@@ -216,6 +216,13 @@
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--green-200); border-radius: 3px; }
+
+  /* Legend for text rotate handle */
+  .handle-legend {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--text-muted); padding: 3px 8px;
+    background: #fff; border: 1px solid var(--border); border-radius: 20px;
+  }
 </style>
 </head>
 <body>
@@ -321,7 +328,12 @@
       <button class="btn" id="btn-edit-building-name" onclick="openBuildingNameModal()" style="display:none;font-size:12px;padding:5px 10px">✏️ Edit Nama</button>
       <button class="btn" id="btn-edit-building-color" onclick="openBuildingColorModal()" style="display:none;font-size:12px;padding:5px 10px;gap:5px"><span id="btn-color-preview" style="width:12px;height:12px;border-radius:3px;background:#B5D4F4;display:inline-block"></span>Ubah Warna</button>
       <span id="layout-selected-info" style="font-size:11px;color:var(--text-muted)">Klik kotak untuk pilih · Seret untuk geser · Pojok untuk ubah ukuran</span>
-      <button class="btn btn-primary" onclick="saveLayout()" style="margin-left:auto;font-size:12px;padding:5px 12px">✅ Selesai &amp; Simpan Layout</button>
+      <!-- Legend for handles -->
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span class="handle-legend"><svg width="10" height="10"><circle cx="5" cy="5" r="5" fill="#FAC775"/></svg> Putar Kotak</span>
+        <span class="handle-legend"><svg width="10" height="10"><circle cx="5" cy="5" r="5" fill="#5B9CF2"/></svg> Putar Teks</span>
+        <button class="btn btn-primary" onclick="saveLayout()" style="font-size:12px;padding:5px 12px">✅ Selesai &amp; Simpan Layout</button>
+      </div>
     </div>
 
     <div class="card" style="padding:14px">
@@ -359,7 +371,6 @@
       <input type="file" id="m-foto-input" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)">
       <button class="btn btn-danger" id="btn-remove-photo" onclick="removePhoto()" style="display:none;margin-top:6px;width:100%;justify-content:center">🗑 Hapus Foto</button>
     </div>
-    <!-- ✅ FIX: hidden fields untuk simpan state foto dan id -->
     <input type="hidden" id="m-edit-id" value="">
     <input type="hidden" id="m-existing-foto" value="">
     <div class="modal-footer">
@@ -429,7 +440,6 @@
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeBuildingColorModal()">Batal</button>
-      <!-- ✅ FIX: Tombol Simpan Warna saja yang benar-benar save+close -->
       <button class="btn btn-primary" onclick="saveBuildingColor()">Simpan Warna</button>
     </div>
   </div>
@@ -454,10 +464,13 @@
       </div>
     </div>
     <div class="form-group" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div><label class="form-label">Rotasi (°)</label><input id="b-rotate-input" type="number" value="0" min="-180" max="180" step="15"></div>
-      <div><label class="form-label">Lebar</label><input id="b-w-input" type="number" value="120" min="30" max="400"></div>
+      <div><label class="form-label">Rotasi Kotak (°)</label><input id="b-rotate-input" type="number" value="0" min="-180" max="180" step="15"></div>
+      <div><label class="form-label">Rotasi Teks (°)</label><input id="b-text-rotate-input" type="number" value="0" min="-180" max="180" step="15"></div>
     </div>
-    <div class="form-group"><label class="form-label">Tinggi</label><input id="b-h-input" type="number" value="80" min="20" max="400"></div>
+    <div class="form-group" style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div><label class="form-label">Lebar</label><input id="b-w-input" type="number" value="120" min="30" max="400"></div>
+      <div><label class="form-label">Tinggi</label><input id="b-h-input" type="number" value="80" min="20" max="400"></div>
+    </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeBuildingModal()">Batal</button>
       <button class="btn btn-primary" onclick="saveBuildingEdit()">Simpan</button>
@@ -510,6 +523,8 @@ async function loadAll() {
     fetch('/api/spots').then(r => r.json()),
     fetch('/api/buildings').then(r => r.json())
   ]);
+  // Ensure all buildings have textRotate field (backward compat)
+  BUILDINGS = BUILDINGS.map(b => ({ textRotate: 0, ...b }));
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -610,27 +625,90 @@ function renderMap() {
   });
   c += `</defs>`;
 
+  /* ── BUILDINGS ── */
   BUILDINGS.forEach((b, bi) => {
-    const cx = b.x + b.w/2, cy = b.y + b.h/2;
+    const cx = b.x + b.w/2;
+    const cy = b.y + b.h/2;
     const rot = b.rotate || 0;
-    const transform = rot ? `transform="rotate(${rot} ${cx} ${cy})"` : '';
+    const textRot = (b.textRotate !== undefined ? b.textRotate : 0);
     const isSelB = layoutEditMode && selectedBuildingIdx === bi;
+
     c += `<g data-building="${bi}" style="cursor:${layoutEditMode?'move':'default'}">`;
-    c += `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" fill="${b.color}" stroke="${isSelB?'#1D9E75':'#aaa'}" stroke-width="${isSelB?2.5:0.5}" rx="4" ${transform}/>`;
+
+    /* Box — rotated around its own center */
+    c += `<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}"
+      fill="${b.color}"
+      stroke="${isSelB?'#1D9E75':'#aaa'}"
+      stroke-width="${isSelB?2.5:0.5}"
+      rx="4"
+      transform="rotate(${rot} ${cx} ${cy})"/>`;
+
+    /* Label text — rotated independently around center */
     if (b.label) {
-      c += `<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="9" fill="#333" font-family="DM Sans,sans-serif" ${transform}>${b.label}</text>`;
+      const totalRot = rot + textRot;
+      c += `<text x="${cx}" y="${cy+4}"
+        text-anchor="middle"
+        font-size="9"
+        fill="#333"
+        font-family="DM Sans,sans-serif"
+        transform="rotate(${totalRot} ${cx} ${cy})"
+        style="pointer-events:none;user-select:none">${b.label}</text>`;
     }
+
+    /* Edit handles — only in layout mode */
     if (isSelB) {
-      c += `<rect x="${b.x+b.w-8}" y="${b.y+b.h-8}" width="10" height="10" fill="#1D9E75" rx="2" data-resize="${bi}" style="cursor:se-resize"/>`;
-      c += `<circle cx="${cx}" cy="${b.y-10}" r="6" fill="#FAC775" stroke="#854F0B" stroke-width="1" data-rotate-handle="${bi}" style="cursor:grab"/>`;
-      c += `<line x1="${cx}" y1="${b.y}" x2="${cx}" y2="${b.y-10}" stroke="#854F0B" stroke-width="1"/>`;
+      /* ── Resize handle (bottom-right corner of un-rotated box, then rotate) ── */
+      const rHandleX = b.x + b.w - 3;
+      const rHandleY = b.y + b.h - 3;
+      // rotate resize handle point around cx,cy
+      const rrRad = rot * Math.PI / 180;
+      const rrX = cx + (rHandleX - cx) * Math.cos(rrRad) - (rHandleY - cy) * Math.sin(rrRad);
+      const rrY = cy + (rHandleX - cx) * Math.sin(rrRad) + (rHandleY - cy) * Math.cos(rrRad);
+      c += `<rect x="${rrX-5}" y="${rrY-5}" width="10" height="10" fill="#1D9E75" rx="2"
+        data-resize="${bi}" style="cursor:se-resize"/>`;
+
+      /* ── Box rotate handle — AMBER, above the box ── */
+      const boxRotHandleOffset = 18;
+      const boxHandleRaw = { x: cx, y: b.y - boxRotHandleOffset };
+      const bhrRad = rot * Math.PI / 180;
+      const bhrX = cx + (boxHandleRaw.x - cx) * Math.cos(bhrRad) - (boxHandleRaw.y - cy) * Math.sin(bhrRad);
+      const bhrY = cy + (boxHandleRaw.x - cx) * Math.sin(bhrRad) + (boxHandleRaw.y - cy) * Math.cos(bhrRad);
+      // Line from top-center of rect to handle
+      const topCenterRaw = { x: cx, y: b.y };
+      const tcrX = cx + (topCenterRaw.x - cx) * Math.cos(bhrRad) - (topCenterRaw.y - cy) * Math.sin(bhrRad);
+      const tcrY = cy + (topCenterRaw.x - cx) * Math.sin(bhrRad) + (topCenterRaw.y - cy) * Math.cos(bhrRad);
+      c += `<line x1="${tcrX}" y1="${tcrY}" x2="${bhrX}" y2="${bhrY}" stroke="#854F0B" stroke-width="1.5" stroke-dasharray="3,2"/>`;
+      c += `<circle cx="${bhrX}" cy="${bhrY}" r="7" fill="#FAC775" stroke="#854F0B" stroke-width="1.5"
+        data-rotate-handle="${bi}" style="cursor:grab"/>`;
+      c += `<text x="${bhrX}" y="${bhrY+4}" text-anchor="middle" font-size="8" fill="#854F0B"
+        style="pointer-events:none;user-select:none">↻</text>`;
+
+      /* ── Text rotate handle — BLUE, below the box ── */
+      const txtRotHandleOffset = 18;
+      const txtHandleRaw = { x: cx, y: b.y + b.h + txtRotHandleOffset };
+      const totalTextRot = rot + textRot;
+      const thrRad = rot * Math.PI / 180;  // handle orbits with box rotation
+      const thrX = cx + (txtHandleRaw.x - cx) * Math.cos(thrRad) - (txtHandleRaw.y - cy) * Math.sin(thrRad);
+      const thrY = cy + (txtHandleRaw.x - cx) * Math.sin(thrRad) + (txtHandleRaw.y - cy) * Math.cos(thrRad);
+      // Line from bottom-center to text handle
+      const botCenterRaw = { x: cx, y: b.y + b.h };
+      const bcrX = cx + (botCenterRaw.x - cx) * Math.cos(thrRad) - (botCenterRaw.y - cy) * Math.sin(thrRad);
+      const bcrY = cy + (botCenterRaw.x - cx) * Math.sin(thrRad) + (botCenterRaw.y - cy) * Math.cos(thrRad);
+      c += `<line x1="${bcrX}" y1="${bcrY}" x2="${thrX}" y2="${thrY}" stroke="#3B6DC8" stroke-width="1.5" stroke-dasharray="3,2"/>`;
+      c += `<circle cx="${thrX}" cy="${thrY}" r="7" fill="#5B9CF2" stroke="#3B6DC8" stroke-width="1.5"
+        data-text-rotate-handle="${bi}" style="cursor:grab"/>`;
+      c += `<text x="${thrX}" y="${thrY+4}" text-anchor="middle" font-size="8" fill="#fff"
+        style="pointer-events:none;user-select:none">T</text>`;
     }
+
     c += `</g>`;
   });
 
+  /* ── Road ── */
   c += `<line x1="0" y1="15" x2="860" y2="15" stroke="#888" stroke-width="7"/>`;
   c += `<text x="10" y="13" font-size="8" fill="#555" font-family="DM Sans,sans-serif">Jalan Raya Utama</text>`;
 
+  /* ── Spots ── */
   spots.forEach((s, i) => {
     const p = plants.find(pl => pl.id === s.plantId);
     if (!p) return;
@@ -648,6 +726,7 @@ function renderMap() {
 
   svg.innerHTML = c;
 
+  /* ── Spot event listeners ── */
   svg.querySelectorAll('[data-spot]').forEach(el => {
     const idx = parseInt(el.getAttribute('data-spot'));
     if (mapEditMode) {
@@ -659,11 +738,13 @@ function renderMap() {
     }
   });
 
+  /* ── Building event listeners ── */
   if (layoutEditMode) {
     svg.querySelectorAll('[data-building]').forEach(el => {
       const bi = parseInt(el.getAttribute('data-building'));
       el.addEventListener('mousedown', e => {
-        if (e.target.dataset.resize || e.target.dataset.rotateHandle) return;
+        // Don't start drag if clicking on handles
+        if (e.target.dataset.resize || e.target.dataset.rotateHandle || e.target.dataset.textRotateHandle) return;
         e.preventDefault(); e.stopPropagation();
         selectedBuildingIdx = bi;
         draggingBuildingIdx = bi;
@@ -675,26 +756,42 @@ function renderMap() {
       });
       el.addEventListener('dblclick', e => { e.stopPropagation(); selectedBuildingIdx = bi; openBuildingModal(bi); });
     });
+
+    /* Resize handles */
     svg.querySelectorAll('[data-resize]').forEach(el => {
       const bi = parseInt(el.getAttribute('data-resize'));
       el.addEventListener('mousedown', e => {
         e.preventDefault(); e.stopPropagation();
         resizingBuildingIdx = bi;
+        resizeHandle = 'resize';
         const coords = getSvgCoords(e);
         bResizeStartX = coords.x; bResizeStartY = coords.y;
         bResizeOrigW = BUILDINGS[bi].w; bResizeOrigH = BUILDINGS[bi].h;
       });
     });
+
+    /* Box rotate handles (amber) */
     svg.querySelectorAll('[data-rotate-handle]').forEach(el => {
       const bi = parseInt(el.getAttribute('data-rotate-handle'));
       el.addEventListener('mousedown', e => {
         e.preventDefault(); e.stopPropagation();
-        resizeHandle = 'rotate';
+        resizeHandle = 'rotate-box';
         resizingBuildingIdx = bi;
-        const coords = getSvgCoords(e);
-        bResizeStartX = coords.x; bResizeStartY = coords.y;
+        selectedBuildingIdx = bi;
       });
     });
+
+    /* Text rotate handles (blue) */
+    svg.querySelectorAll('[data-text-rotate-handle]').forEach(el => {
+      const bi = parseInt(el.getAttribute('data-text-rotate-handle'));
+      el.addEventListener('mousedown', e => {
+        e.preventDefault(); e.stopPropagation();
+        resizeHandle = 'rotate-text';
+        resizingBuildingIdx = bi;
+        selectedBuildingIdx = bi;
+      });
+    });
+
     svg.addEventListener('mousemove', onBuildingDrag);
     svg.addEventListener('mouseup', endBuildingDrag);
   }
@@ -707,6 +804,7 @@ function renderMap() {
     svg.addEventListener('click', onMapClick);
   }
 
+  /* ── Legend ── */
   const leg = document.getElementById('legend');
   const uniqueIds = [...new Set(spots.map(s => s.plantId))];
   leg.innerHTML = uniqueIds.map(id => {
@@ -739,6 +837,7 @@ function onDrag(e) {
 }
 function endDrag() { draggingSpotIdx = -1; }
 
+/* ── BUILDING DRAG / RESIZE / ROTATE ── */
 function onBuildingDrag(e) {
   if (draggingBuildingIdx >= 0) {
     e.preventDefault();
@@ -749,12 +848,20 @@ function onBuildingDrag(e) {
   } else if (resizingBuildingIdx >= 0) {
     e.preventDefault();
     const c = getSvgCoords(e);
-    if (resizeHandle === 'rotate') {
-      const b = BUILDINGS[resizingBuildingIdx];
-      const cx = b.x + b.w/2, cy = b.y + b.h/2;
+    const b = BUILDINGS[resizingBuildingIdx];
+    const cx = b.x + b.w / 2;
+    const cy = b.y + b.h / 2;
+
+    if (resizeHandle === 'rotate-box') {
+      /* Rotate the BOX (and text moves with it since totalRot = rot + textRot) */
       const angle = Math.atan2(c.y - cy, c.x - cx) * 180 / Math.PI + 90;
       BUILDINGS[resizingBuildingIdx].rotate = Math.round(angle / 5) * 5;
-    } else {
+    } else if (resizeHandle === 'rotate-text') {
+      /* Rotate the TEXT independently — textRotate is delta from box rotation */
+      const angle = Math.atan2(c.y - cy, c.x - cx) * 180 / Math.PI + 90;
+      const boxRot = BUILDINGS[resizingBuildingIdx].rotate || 0;
+      BUILDINGS[resizingBuildingIdx].textRotate = Math.round((angle - boxRot) / 5) * 5;
+    } else if (resizeHandle === 'resize') {
       const dx = c.x - bResizeStartX, dy = c.y - bResizeStartY;
       BUILDINGS[resizingBuildingIdx].w = Math.max(30, bResizeOrigW + dx);
       BUILDINGS[resizingBuildingIdx].h = Math.max(20, bResizeOrigH + dy);
@@ -888,7 +995,6 @@ function handlePhotoUpload(e) {
   const file = e.target.files[0];
   if (!file) return;
   pendingFotoFile = file;
-  // Tampilkan preview lokal dulu
   const reader = new FileReader();
   reader.onload = ev => {
     const prev = document.getElementById('photo-preview');
@@ -929,7 +1035,6 @@ function openAddModal() {
   document.getElementById('m-jumlah').value = '';
   document.getElementById('m-kondisi').value = 'Baik';
   document.getElementById('m-edit-id').value = '';
-  // ✅ FIX: Clear existing foto
   document.getElementById('m-existing-foto').value = '';
   pendingFotoFile = null;
   removePhoto();
@@ -947,7 +1052,6 @@ function editPlant(id) {
   document.getElementById('m-kondisi').value = p.kondisi;
   document.getElementById('m-desc').value    = p.desc || '';
   document.getElementById('m-edit-id').value = id;
-  // ✅ FIX: Simpan URL foto lama di hidden field
   document.getElementById('m-existing-foto').value = p.foto || '';
   pendingFotoFile = null;
   const prev = document.getElementById('photo-preview');
@@ -974,7 +1078,6 @@ async function saveModal() {
   const takenColors = plants.map(p => p.color);
   const freeColor = PLANT_COLORS.find(c => !takenColors.includes(c)) || PLANT_COLORS[Math.floor(Math.random()*PLANT_COLORS.length)];
 
-  // ✅ FIX: Gunakan hidden field untuk foto lama, bukan cek DOM
   const existingFoto = document.getElementById('m-existing-foto').value || '';
 
   const body = {
@@ -985,7 +1088,7 @@ async function saveModal() {
     kondisi: document.getElementById('m-kondisi').value,
     desc: document.getElementById('m-desc').value.trim(),
     color: editId ? (plants.find(p=>p.id==editId)?.color || freeColor) : freeColor,
-    foto: existingFoto  // ✅ pakai foto lama, bukan ''
+    foto: existingFoto
   };
 
   let savedPlant;
@@ -998,7 +1101,6 @@ async function saveModal() {
     plants.push(savedPlant);
   }
 
-  // Upload foto langsung ke Cloudinary (bypass server — Vercel serverless tidak support multer)
   if (pendingFotoFile) {
     btn.textContent = 'Upload foto...';
     try {
@@ -1009,7 +1111,6 @@ async function saveModal() {
       const r = await fetch(`https://api.cloudinary.com/v1_1/dl04fwxue/image/upload`, { method:'POST', body:fd });
       const result = await r.json();
       if (result.secure_url) {
-        // Simpan URL foto ke database via server
         await api('PUT', `/api/plants/${savedPlant.id}`, { ...body, foto: result.secure_url });
         savedPlant.foto = result.secure_url;
         const idx = plants.findIndex(p => p.id === savedPlant.id);
@@ -1056,7 +1157,7 @@ let layoutEditMode = false;
 let selectedBuildingIdx = -1;
 let draggingBuildingIdx = -1;
 let resizingBuildingIdx = -1;
-let resizeHandle = null;
+let resizeHandle = null;   // 'resize' | 'rotate-box' | 'rotate-text'
 let bDragOffsetX = 0, bDragOffsetY = 0;
 let bResizeStartX = 0, bResizeStartY = 0, bResizeOrigW = 0, bResizeOrigH = 0;
 let editingBuildingIdx = -1;
@@ -1095,7 +1196,7 @@ async function saveLayout() {
 }
 
 function addBuilding() {
-  BUILDINGS.push({ x: 100, y: 150, w: 120, h: 70, label: 'Baru', color: '#C0DD97', rotate: 0 });
+  BUILDINGS.push({ x: 100, y: 150, w: 120, h: 70, label: 'Baru', color: '#C0DD97', rotate: 0, textRotate: 0 });
   selectedBuildingIdx = BUILDINGS.length - 1;
   renderMap();
   showBuildingEditBar();
@@ -1130,7 +1231,9 @@ function showBuildingEditBar() {
   document.getElementById('btn-edit-building-color').style.display = '';
   const b = BUILDINGS[selectedBuildingIdx];
   document.getElementById('btn-color-preview').style.background = b.color;
-  document.getElementById('layout-selected-info').textContent = `✔ Dipilih: "${b.label||'(tanpa nama)'}"`;
+  const tr = b.textRotate || 0;
+  document.getElementById('layout-selected-info').textContent =
+    `✔ Dipilih: "${b.label||'(tanpa nama)'}" · Rotasi kotak: ${b.rotate||0}° · Rotasi teks: ${tr}°`;
 }
 
 /* ── MODAL EDIT NAMA ── */
@@ -1154,7 +1257,6 @@ async function saveBuildingName() {
 }
 
 /* ── MODAL UBAH WARNA ── */
-// ✅ FIX: pendingBuildingColor hanya diupdate saat klik, TIDAK auto-save saat klik swatch
 let pendingBuildingColor = '#B5D4F4';
 
 function openBuildingColorModal() {
@@ -1174,7 +1276,6 @@ function updateBcPreview(color) {
   document.getElementById('bc-color-preview-box').style.background = color;
   document.getElementById('bc-color-preview-label').textContent = color.toUpperCase();
 }
-// ✅ FIX: saveBuildingColor hanya dipanggil dari tombol "Simpan Warna", bukan dari klik swatch
 async function saveBuildingColor() {
   if (selectedBuildingIdx < 0) return;
   BUILDINGS[selectedBuildingIdx].color = pendingBuildingColor;
@@ -1186,7 +1287,6 @@ async function saveBuildingColor() {
   showToast('Warna disimpan ✓');
 }
 
-// Pasang onclick langsung ke setiap swatch saat DOM siap
 function initColorSwatches() {
   document.querySelectorAll('#bc-color-picker .b-color-opt').forEach(el => {
     el.onclick = function(e) {
@@ -1225,6 +1325,7 @@ function openBuildingModal(idx) {
   const b = BUILDINGS[idx];
   document.getElementById('b-label-input').value = b.label || '';
   document.getElementById('b-rotate-input').value = b.rotate || 0;
+  document.getElementById('b-text-rotate-input').value = b.textRotate || 0;
   document.getElementById('b-w-input').value = b.w;
   document.getElementById('b-h-input').value = b.h;
   selectedBuildingColor = b.color;
@@ -1239,11 +1340,12 @@ function closeBuildingModal() {
 }
 async function saveBuildingEdit() {
   if (editingBuildingIdx < 0) return;
-  BUILDINGS[editingBuildingIdx].label  = document.getElementById('b-label-input').value.trim();
-  BUILDINGS[editingBuildingIdx].rotate = parseInt(document.getElementById('b-rotate-input').value) || 0;
-  BUILDINGS[editingBuildingIdx].w      = Math.max(30, parseInt(document.getElementById('b-w-input').value) || 120);
-  BUILDINGS[editingBuildingIdx].h      = Math.max(20, parseInt(document.getElementById('b-h-input').value) || 70);
-  BUILDINGS[editingBuildingIdx].color  = selectedBuildingColor;
+  BUILDINGS[editingBuildingIdx].label      = document.getElementById('b-label-input').value.trim();
+  BUILDINGS[editingBuildingIdx].rotate     = parseInt(document.getElementById('b-rotate-input').value) || 0;
+  BUILDINGS[editingBuildingIdx].textRotate = parseInt(document.getElementById('b-text-rotate-input').value) || 0;
+  BUILDINGS[editingBuildingIdx].w          = Math.max(30, parseInt(document.getElementById('b-w-input').value) || 120);
+  BUILDINGS[editingBuildingIdx].h          = Math.max(20, parseInt(document.getElementById('b-h-input').value) || 70);
+  BUILDINGS[editingBuildingIdx].color      = selectedBuildingColor;
   closeBuildingModal();
   renderMap();
   if (layoutEditMode) showBuildingEditBar();
